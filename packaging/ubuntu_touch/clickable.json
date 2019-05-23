@@ -1,0 +1,9 @@
+{
+  "template": "cmake",
+  "kill": "sfxr-qt",
+  "build_args": "-DUBUNTU_TOUCH=ON",
+    "dependencies_target": [
+      "libsdl1.2-dev"
+    ]
+}
+

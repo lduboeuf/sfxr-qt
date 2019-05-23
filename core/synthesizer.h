@@ -4,7 +4,7 @@
 #include "noisegenerator.h"
 
 #include <memory>
-#include <unordered_map>
+#include <map> //before unordered_map
 
 static constexpr int PHASER_BUFFER_LENGTH = 1024;
 
@@ -43,7 +43,7 @@ private:
     float square_slide;
     EnvelopStage env_stage;
     int env_time;
-    std::unordered_map<EnvelopStage, int> env_length;
+    std::map<EnvelopStage, int> env_length;
     float env_vol;
     float fphase;
     float fdphase;
