@@ -1,6 +1,10 @@
 project(sfxr-qt C CXX)
 cmake_minimum_required(VERSION 3.1)
 
+string(REGEX REPLACE "gcc$" "g++" CMAKE_CXX_COMPILER "${CMAKE_CXX_COMPILER}")
+
+#LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/lib")
+
 # Get Architecture triplet
 execute_process(
     COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH
@@ -13,7 +17,7 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
-find_package(SDL REQUIRED)
+#find_package(SDL2 REQUIRED)
 #find_package(Qt5 REQUIRED Gui Quick Widgets)
 find_package(Qt5Core)
 find_package(Qt5Qml)
@@ -21,7 +25,7 @@ find_package(Qt5Quick)
 find_package(Qt5Widgets)
 #include(qpropgen/cmake/qpropgen.cmake)
 
-set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
+#set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
 
 
 #set(CMAKE_CXX_EXTENSIONS OFF)
@@ -31,7 +35,7 @@ set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
 
 
 include_directories(
-    ${SDL_INCLUDE_DIR}
+    ${CMAKE_CURRENT_LIST_DIR}/lib/SDL2/include
     core
     ${CMAKE_CURRENT_BINARY_DIR}/core
 )
@@ -50,19 +54,15 @@ set(SRCS
     core/basewavsaver.cpp
 )
 
-#qpropgen(QPROPGEN_SRCS
-#    core/basesound.yaml
-#    core/basesoundlistmodel.yaml
-#    core/basewavsaver.yaml
-#)
 
 qt5_add_resources(QRC_SRCS ui/qml.qrc)
 
-#set_property(SOURCE ${CMAKE_CURRENT_BINARY_DIR}/core/basewavsaver.cpp PROPERTY SKIP_AUTOMOC ON)
 
+#include SDL2 sources
+add_subdirectory(lib)
 
 add_executable(sfxr-qt ${SRCS} ${QRC_SRCS})
-target_link_libraries(sfxr-qt SDL Qt5::Widgets Qt5::Quick)
+target_link_libraries(sfxr-qt SDL2 Qt5::Widgets Qt5::Quick)
 
 #execute_process(
 #    COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH
@@ -102,4 +102,9 @@ if (UBUNTU_TOUCH)
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION /)
 
 
+
+
 endif ()
+
+
+

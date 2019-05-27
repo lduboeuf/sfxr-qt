@@ -9,6 +9,7 @@ ColumnLayout {
     property alias model: listView.model
     property alias currentIndex: listView.currentIndex
     signal currentSoundClicked()
+    signal soundSelected(string soundName)
 
     property int innerMargin: 4
 
@@ -37,38 +38,62 @@ ColumnLayout {
                 }
             }
 
+
             Button {
+                anchors.right: selectBtn.left
+                anchors.rightMargin: 12
+                anchors.verticalCenter: parent.verticalCenter
+                text: qsTr("MUT")
+                onClicked: {
+                    generator.mutate(sound);
+                }
+            }
+
+            Button {
+                id:selectBtn
                 anchors {
                     right: parent.right
                     rightMargin: innerMargin
                     verticalCenter: parent.verticalCenter
                 }
-                height: parent.height - 2 * innerMargin
-                width: height
-                flat: true
-                text: "⨯"
-
-                onClicked: {
-                    if (listView.count === 1) {
-                        // If the item is alone, reset it, do not remove it
-                        root.model.resetSoundAtRow(0);
-                        return;
-                    }
-
-                    if (model.index === listView.currentIndex) {
-                        selectAnother();
-                    }
-                    root.model.remove(model.index);
-                }
-
-                function selectAnother() {
-                    if (model.index < listView.count - 1) {
-                        listView.currentIndex = model.index + 1;
-                    } else {
-                        listView.currentIndex = model.index - 1;
-                    }
-                }
+                text: qsTr("edit")
+                //scale: 1.5
+                onClicked: soundSelected(model.text)
             }
+
+//            Button {
+//                id:delBtn
+//                anchors {
+//                    right: parent.right
+//                    rightMargin: innerMargin
+//                    verticalCenter: parent.verticalCenter
+//                }
+//                height: parent.height - 2 * innerMargin
+//                width: height
+//                flat: true
+//                text: "⨯"
+
+//                onClicked: {
+//                    if (listView.count === 1) {
+//                        // If the item is alone, reset it, do not remove it
+//                        root.model.resetSoundAtRow(0);
+//                        return;
+//                    }
+
+//                    if (model.index === listView.currentIndex) {
+//                        selectAnother();
+//                    }
+//                    root.model.remove(model.index);
+//                }
+
+//                function selectAnother() {
+//                    if (model.index < listView.count - 1) {
+//                        listView.currentIndex = model.index + 1;
+//                    } else {
+//                        listView.currentIndex = model.index - 1;
+//                    }
+//                }
+//            }
         }
 
         ScrollIndicator.vertical: ScrollIndicator {}

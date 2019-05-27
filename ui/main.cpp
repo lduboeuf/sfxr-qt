@@ -8,11 +8,17 @@
 #include "soundplayer.h"
 #include "wavsaver.h"
 
+#include <SDL.h>
+
 int main(int argc, char* argv[]) {
+
+    QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
+
     QApplication app(argc, argv);
     app.setOrganizationDomain("agateau.com");
     app.setApplicationName("sfxr-qt");
     app.setApplicationDisplayName("SFXR Qt");
+
 
     QIcon icon;
     for(int size: {16, 32, 48}) {
@@ -26,7 +32,7 @@ int main(int argc, char* argv[]) {
     qmlRegisterType<Generator>("sfxr", 1, 0, "Generator");
     qmlRegisterType<SoundListModel>("sfxr", 1, 0, "SoundListModel");
     qmlRegisterType<WavSaver>("sfxr", 1, 0, "WavSaver");
-    engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/main_mobile.qml")));
 
     return app.exec();
 }

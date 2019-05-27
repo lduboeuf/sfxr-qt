@@ -7,6 +7,8 @@
 
 #include <sound.h>
 
+ #include <QDebug>
+
 inline int rnd(int n) {
     return rand() % (n + 1);
 }
@@ -14,6 +16,12 @@ inline int rnd(int n) {
 inline float frnd(float range) {
     return (float)rnd(10000) / 10000 * range;
 }
+
+inline float cube(float x){
+    return x * x * x;
+}
+
+
 
 Generator::Generator(QObject* parent)
     : QObject(parent) {
@@ -187,6 +195,8 @@ void Generator::generateBlipSelect() {
     soundGenerated(sound);
 }
 
+
+
 void Generator::mutate(Sound* source) {
     Sound* sound = createSound(tr("Mutated"));
     sound->fromOther(source);
@@ -203,7 +213,9 @@ void Generator::mutate(Sound* source) {
 
 Sound* Generator::createSound(const QString& name) {
     Sound* sound = new Sound;
-    sound->setUnsavedName(name);
+    QString cname = name + QStringLiteral("%1").arg(counter++);
+    //qDebug() << cname;
+    sound->setUnsavedName(cname);
     QQmlEngine::setObjectOwnership(sound, QQmlEngine::CppOwnership);
     return sound;
 }

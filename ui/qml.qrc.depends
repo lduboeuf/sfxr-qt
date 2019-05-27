@@ -13,15 +13,5 @@
         <file>SoundListView.qml</file>
         <file>VerticalSpacer.qml</file>
         <file>PlayBar.qml</file>
-        <file>main_mobile.qml</file>
-        <file>SoundSampleGenerators.qml</file>
-        <file>SoundBoard.qml</file>
-        <file>EnvelopEffect.qml</file>
-        <file>FilterEffect.qml</file>
-        <file>FrequencyEffect.qml</file>
-        <file>OthersEffect.qml</file>
-        <file>SoundEffectGroup.qml</file>
-        <file>CollapseButton.qml</file>
-        <file>qtquickcontrols2.conf</file>
     </qresource>
 </RCC>

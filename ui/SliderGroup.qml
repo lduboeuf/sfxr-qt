@@ -9,12 +9,28 @@ ColumnLayout {
     property string text
     property Sound sound
     property ListModel model
+    //Layout.fillWidth: true
+    //width: parent.width
 
-    Label {
-        Layout.fillWidth: true
-        text: root.text
-        font.bold: true
-    }
+    RowLayout {
+        width: parent.width
+
+            Label {
+                //Layout.fillWidth: true
+                anchors.left: parent.left
+                //Layout.alignment: Qt.AlignLeft
+                text: root.text
+                font.bold: true
+            }
+
+
+
+
+        }
+
+
+
+
 
     Repeater {
         model: root.model

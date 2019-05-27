@@ -22,21 +22,25 @@ RowLayout {
     }
 
     Button {
+        Layout.fillWidth: true
         checkable: true
         text: qsTr("Square")
     }
 
     Button {
+        Layout.fillWidth: true
         checkable: true
         text: qsTr("Sawtooth")
     }
 
     Button {
+        Layout.fillWidth: true
         checkable: true
         text: qsTr("Sine")
     }
 
     Button {
+        Layout.fillWidth: true
         checkable: true
         text: qsTr("Noise")
     }

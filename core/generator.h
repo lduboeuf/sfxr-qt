@@ -21,6 +21,7 @@ public:
     Q_INVOKABLE void generateHitHurt();
     Q_INVOKABLE void generateJump();
     Q_INVOKABLE void generateBlipSelect();
+    //Q_INVOKABLE void generateRandom();
 
     Q_INVOKABLE void mutate(Sound* sound);
 
@@ -29,6 +30,7 @@ signals:
 
 private:
     Sound* createSound(const QString& name);
+    int counter =0;
 };
 
 #endif // GENERATOR_H

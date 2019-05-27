@@ -2,7 +2,7 @@
 
 #include <QTimer>
 
-#include <SDL.h>
+#include <SDL2/SDL.h>
 
 #include <sound.h>
 #include <synthesizer.h>
@@ -24,6 +24,9 @@ private:
 SoundPlayer::SoundPlayer(QObject* parent)
     : QObject(parent)
     , mPlayTimer(new QTimer(this)) {
+
+    if(SDL_Init(SDL_INIT_AUDIO) < 0) exit(0);
+
     mPlayThreadData.synth.reset(new Synthesizer);
 
     mPlayTimer->setInterval(SCHEDULED_PLAY_DELAY);
@@ -153,8 +156,9 @@ void SoundPlayer::registerCallback() {
     des.samples = 512;
     des.callback = staticSdlAudioCallback;
     des.userdata = this;
+
     if (SDL_OpenAudio(&des, NULL) != 0) {
-        fprintf(stderr, "Failed to init audio\n");
+        fprintf(stderr, "Failed to init audio %s\n", SDL_GetError());
         exit(1);
     }
     SDL_PauseAudio(0);

@@ -10,26 +10,17 @@ RowLayout {
         id: playButton
         Layout.minimumWidth: implicitWidth * 1.5
         Layout.minimumHeight: implicitHeight * 1.5
-        text: qsTr("Play (Return)")
+        text: qsTr("Play")
         onClicked: {
             soundPlayer.play();
         }
     }
     CheckBox {
-        text: qsTr("Loop (L)")
+        text: qsTr("Loop")
         checked: soundPlayer.loop
         onCheckedChanged: {
             soundPlayer.loop = checked;
         }
     }
-    Shortcut {
-        sequence: "Return"
-        onActivated: soundPlayer.play();
-    }
-    Shortcut {
-        sequence: "L"
-        onActivated: {
-            soundPlayer.loop = !soundPlayer.loop;
-        }
-    }
+
 }
