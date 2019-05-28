@@ -1,13 +1,14 @@
 import QtQuick 2.4
-import QtQuick.Controls 2.0
+import QtQuick.Controls 2.2
 
 import sfxr 1.0
 
-Slider {
+Dial {
     id: root
     property Sound sound
     property string soundProperty
     property bool bipolar: false
+
 
     // For some reason setting from to -1 does not work anymore: the handle stays
     // stuck in the middle of the Slider (Qt 5.9.5 and Qt 5.11.1). To workaround
@@ -29,14 +30,14 @@ Slider {
         }
     }
 
-    Rectangle {
-        width: 1
-        height: parent.height
-        z: -2
-        visible: bipolar
-        x: parent.width / 2
-        color: "#ccc"
-    }
+//    Rectangle {
+//        width: 1
+//        height: parent.height
+//        z: -2
+//        visible: bipolar
+//        x: parent.width / 2
+//        color: "#ccc"
+//    }
 
     function soundValueForSliderValue(v) {
         return bipolar ? (v - 1) : v;

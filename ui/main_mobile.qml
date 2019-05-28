@@ -8,7 +8,7 @@ import sfxr 1.0
 ApplicationWindow {
     id: root
     visible: true
-    height: 520
+    height: 640
     width: 380
 
     property string selectedSoundName
@@ -60,8 +60,17 @@ ApplicationWindow {
 
 
             Label {
+                id:title
                 anchors.horizontalCenter: parent.horizontalCenter
                 text: qsTr("sfxr")
+                font.pixelSize: Qt.application.font.pixelSize * 1.2
+            }
+
+            Rectangle {
+                width: parent.width
+                anchors.bottom: title.bottom
+                color:"grey"
+                height: 1
             }
 
 

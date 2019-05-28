@@ -23,5 +23,11 @@
         <file>SoundEffectGroup.qml</file>
         <file>CollapseButton.qml</file>
         <file>qtquickcontrols2.conf</file>
+        <file>SwipableItem.qml</file>
+        <file>assets/edit.svg</file>
+        <file>assets/edit-delete.svg</file>
+        <file>assets/go-previous.svg</file>
+        <file>assets/next.svg</file>
+        <file>assets/home.svg</file>
     </qresource>
 </RCC>

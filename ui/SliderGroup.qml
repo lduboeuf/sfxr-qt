@@ -9,46 +9,81 @@ ColumnLayout {
     property string text
     property Sound sound
     property ListModel model
-    //Layout.fillWidth: true
-    //width: parent.width
+
+    property real knobSize: 100
+
 
     RowLayout {
+        id:title
         width: parent.width
 
-            Label {
-                //Layout.fillWidth: true
-                anchors.left: parent.left
-                //Layout.alignment: Qt.AlignLeft
-                text: root.text
-                font.bold: true
-            }
-
-
-
+        Label {
+            id:lbl
+            Layout.fillWidth: true
+            anchors.left: parent.left
+            //Layout.alignment: Qt.AlignLeft
+            text: root.text
+            font.bold: true
 
         }
-
-
-
-
-
-    Repeater {
-        model: root.model
-        Row {
+        Rectangle {
+            height: 1
+            color: "grey"
             width: parent.width
-            Label {
-                text: model.text
-                width: parent.width / 3
-                anchors.verticalCenter: slider.verticalCenter
-                horizontalAlignment: Qt.AlignRight
-            }
-            SoundSlider {
-                id: slider
-                sound: root.sound
-                soundProperty: model.soundProperty
-                bipolar: model.bipolar === true
-                width: parent.width * 2 / 3
-            }
+            anchors.topMargin: 4
+            anchors.top: lbl.bottom
         }
+
+
+
+
+
+
+    }
+
+
+    GridLayout {
+        id:container
+        columns: 2
+        rowSpacing: 12
+        columnSpacing: 12
+
+        anchors.horizontalCenter: parent.horizontalCenter
+
+
+
+        Repeater {
+            model: root.model
+            //Row {
+            // width: parent.width
+
+            Column {
+
+
+
+                SoundSlider {
+                    id: slider
+                    sound: root.sound
+                    soundProperty: model.soundProperty
+                    bipolar: model.bipolar === true
+                    //implicitWidth: root.knobSize
+                    //implicitHeight: root.knobSize
+                    width: root.knobSize
+                    height: root.knobSize
+                    //width: parent.width * 2 / 3
+
+
+                }
+
+                Label {
+                    text: model.text
+                    anchors.horizontalCenter: slider.horizontalCenter
+                    anchors.topMargin: 12
+                }
+
+            }
+
+        }
+
     }
 }

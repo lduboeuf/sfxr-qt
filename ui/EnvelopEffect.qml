@@ -4,7 +4,7 @@ import QtQuick.Layouts 1.3
 
 ColumnLayout{
 
-    CollapseButton {}
+    //CollapseButton {}
 
     SliderGroup {
         id:envelopGroup
