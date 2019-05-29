@@ -74,20 +74,7 @@ target_link_libraries(sfxr-qt SDL2 Qt5::Widgets Qt5::Quick)
 #include_directories(${SOMELIBRARY_INCLUDE_DIRS})
 #target_link_libraries(mytarget ${SOMELIBRARY_LIBS})
 
-# Installation
-install(TARGETS sfxr-qt RUNTIME DESTINATION bin)
 
-install(FILES ui/icons/sfxr-qt.desktop
-    DESTINATION share/applications
-    RENAME com.agateau.sfxr-qt.desktop
-)
-
-foreach(size 16 32 48)
-    install(FILES ui/icons/sfxr-qt-${size}.png
-        DESTINATION share/icons/hicolor/${size}x${size}/apps
-        RENAME sfxr-qt.png
-    )
-endforeach()
 
 #option (UBUNTU_TOUCH "Build for Ubuntu Touch." OFF)
 if (UBUNTU_TOUCH)
@@ -95,14 +82,30 @@ if (UBUNTU_TOUCH)
 
     set(UT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/packaging/ubuntu_touch)
     install(FILES ${UT_PATH}/manifest.json DESTINATION /)
-    install(FILES ${UT_PATH}/sfxr-qt.apparmor DESTINATION /)
-    install(FILES ${UT_PATH}/sfxr-qt.desktop DESTINATION /)
+    install(FILES ${UT_PATH}/sfxr.apparmor DESTINATION /)
+    install(FILES ${UT_PATH}/sfxr.png DESTINATION /)
+    install(FILES ${UT_PATH}/sfxr.desktop DESTINATION /)
     #install(FILES assets/logo.png DESTINATION /assets/)
 
     install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION /)
+    add_definitions(-DQ_OS_UBUNTU_TOUCH)
 
+else()
 
+    # Installation
+    install(TARGETS sfxr-qt RUNTIME DESTINATION bin)
 
+    install(FILES ui/icons/sfxr-qt.desktop
+        DESTINATION share/applications
+        RENAME com.agateau.sfxr-qt.desktop
+    )
+
+    foreach(size 16 32 48)
+        install(FILES ui/icons/sfxr-qt-${size}.png
+            DESTINATION share/icons/hicolor/${size}x${size}/apps
+            RENAME sfxr-qt.png
+        )
+    endforeach()
 
 endif ()
 

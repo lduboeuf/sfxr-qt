@@ -2,27 +2,15 @@ include(ExternalProject)
 
 #
 # SDL2
-# FROM https://gitlab.com/zub2/SDLDemo
+# inspired by https://gitlab.com/zub2/SDLDemo
 #
 
-# SDL provides a CMakeLists.txt but I'm not sure how complete is it. So
-# I used autotools build, which is the documented way of building SDL.
-
-# Also note this builds the static library as shared library doesn't seem
-# to bring any benefits in the click/snap scenario.
-
-# The sources could be retrieved by ExternalProject but they are kept in
-# mercurial and mercurial client is not available in the SDK containers.
-# Instead just run download-dependencies.sh outside the container.
-
-# To enable audio install libpulse-dev:$ARCH inside the containers, e.g.:
-# apt install libpulse-dev:armhf
 
 set(SDL2_SRC "${CMAKE_CURRENT_SOURCE_DIR}/SDL2")
 
 
 if (NOT EXISTS ${SDL2_SRC})
-        message(FATAL_ERROR "Can't find SDL2 sources. Please run hg clone -r 10361 http://hg.libsdl.org/SDL SDL2 (Mercurial project)")
+        message(FATAL_ERROR "Can't find SDL2 sources. Please run in lib folder hg clone -r 10361 http://hg.libsdl.org/SDL SDL2 (Mercurial project)")
 endif ()
 
 set(USE_VIDEO OFF)

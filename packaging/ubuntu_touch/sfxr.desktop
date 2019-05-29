@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Sfxr
 Exec=sfxr-qt
-Icon=assets/logo.png
+Icon=sfxr.png
 Terminal=false
 Type=Application
 X-Ubuntu-Touch=true

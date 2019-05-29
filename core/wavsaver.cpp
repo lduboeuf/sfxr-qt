@@ -1,6 +1,10 @@
 #include "wavsaver.h"
 
 #include <QUrl>
+#include <QDir>
+#include <QFile>
+#include <QStandardPaths>
+#include <QDebug>
 
 #include "sound.h"
 #include "synthesizer.h"
@@ -45,7 +49,13 @@ WavSaver::WavSaver(QObject* parent)
 }
 
 bool WavSaver::save(Sound* sound, const QUrl& url) {
-    QString path = url.path();
+    QString path=url.path();
+
+    if (QFile::exists(path))
+    {
+        QFile::remove(path);
+    }
+
     FILE* foutput = fopen(path.toLocal8Bit().constData(), "wb");
     if (!foutput) {
         return false;

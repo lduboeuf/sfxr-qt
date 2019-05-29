@@ -38,31 +38,9 @@ Page {
                 mainStack.pop()
             }
 
-//                    ColorOverlay {
-//                            id: overlay
-//                            anchors.fill: navImage
-//                            source: navImage
-//                            color: "black"
-//                        }
-
-
          }
 
 
-
-
-//        ToolButton {
-//            //visible: mainStack.depth > 1
-//            anchors.left: parent.left
-//            anchors.verticalCenter: parent.verticalCenter
-//            text: "◀"
-//            scale:1.5
-//            onClicked:{
-//                soundPlayer.loop = checked;
-//                mainStack.pop()
-//            }
-
-//        }
 
         Row {
             anchors.horizontalCenter: parent.horizontalCenter
@@ -70,20 +48,57 @@ Page {
 
             Label {
                 id:titleLbl
+                anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("sound: ") + root.selectedSoundName
             }
 
-            CheckBox {
-                implicitHeight: titleLbl.implicitHeight
-                text: qsTr("Loop")
-                checked: soundPlayer.loop
-                indicator.width: implicitHeight
-                indicator.height: implicitHeight
-                onCheckedChanged: {
-                    soundPlayer.loop = checked;
-                    soundPlayer.play();
+            ToolButton {
+                id:loopBtn
+                //enabled: false
+                contentItem: Image {
+                    id:loopImg
+                    fillMode: Image.Pad
+                    opacity: (soundPlayer.loop) ? 1 : 0.4
+                    sourceSize.width: headerRow.height  * 0.4
+                    sourceSize.height: headerRow.height  * 0.4
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    source: "/assets/loop.svg"
                 }
-            }
+                onClicked: {
+                    soundPlayer.loop = !soundPlayer.loop;
+                    if (soundPlayer.loop)
+                        soundPlayer.play();
+
+                }
+
+             }
+            ToolButton {
+                id:playBtn
+                contentItem: Image {
+                    id:playImg
+                    fillMode: Image.Pad
+                    sourceSize.width: headerRow.height  * 0.4
+                    sourceSize.height: headerRow.height  * 0.4
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    source: "/assets/play.svg"
+                }
+                onClicked: {
+                        soundPlayer.play();
+
+                }
+
+             }
+
+
+        }
+
+        ExportHandler{
+            anchors.right:  parent.right
+            width:headerRow.height
+            height: width
+            anchors.verticalCenter: parent.verticalCenter
         }
 
 
@@ -107,48 +122,6 @@ Page {
 
     }
 
-//    Item {
-//        id:menu
-//        visible: false
-//        GridLayout{
-//            id:menuGrid
-//            anchors.centerIn: parent
-//            rowSpacing: 12
-//            columnSpacing: 12
-//            columns: 2
-//            scale:1.5
-
-
-//            Button {
-//                Layout.fillWidth: true
-//                Layout.fillHeight: true
-//                text: qsTr("Enveloppe")
-//                onClicked: pageStack.push("qrc:/EnvelopEffect.qml")
-//            }
-
-//            Button {
-//                Layout.fillWidth: true
-//                Layout.fillHeight: true
-//                text: qsTr("Frequency")
-//                onClicked: pageStack.push("qrc:/FrequencyEffect.qml")
-//            }
-
-//            Button {
-//                Layout.fillWidth: true
-//                Layout.fillHeight: true
-//                text: qsTr("Filters")
-//                onClicked: pageStack.push("qrc:/FilterEffect.qml")
-//            }
-//            Button {
-//                Layout.fillWidth: true
-//                Layout.fillHeight: true
-//                text: qsTr("Others")
-//                onClicked: pageStack.push("qrc:/OthersEffect.qml")
-//            }
-
-//        }
-
-//    }
 
     SwipeView {
         id: swipeView
@@ -283,18 +256,6 @@ Page {
 
         Column{
             anchors.fill: parent.contentItem
-            SliderGroup {
-                width: parent.width
-                knobSize: swipeView.knobSize
-                text: qsTr("Repeat")
-                sound: root.sound
-                model: ListModel {
-                    ListElement {
-                        text: qsTr("Repeat speed")
-                        soundProperty: "repeatSpeed"
-                    }
-                }
-            }
 
             SliderGroup {
                 width: parent.width
@@ -330,6 +291,18 @@ Page {
                     ListElement {
                         text: qsTr("Change speed")
                         soundProperty: "changeSpeed"
+                    }
+                }
+            }
+            SliderGroup {
+                width: parent.width
+                knobSize: swipeView.knobSize
+                text: qsTr("Repeat")
+                sound: root.sound
+                model: ListModel {
+                    ListElement {
+                        text: qsTr("Repeat speed")
+                        soundProperty: "repeatSpeed"
                     }
                 }
             }

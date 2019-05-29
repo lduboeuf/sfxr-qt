@@ -46,7 +46,7 @@ ColumnLayout {
         id:container
         columns: 2
         rowSpacing: 12
-        columnSpacing: 12
+        columnSpacing: 24
 
         anchors.horizontalCenter: parent.horizontalCenter
 

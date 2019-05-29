@@ -32,8 +32,9 @@ SwipeDelegate {
         }
 
         Button {
+            id:mutBtn
             anchors.left: parent.left
-            anchors.rightMargin: 12
+            //anchors.rightMargin: 12
             anchors.verticalCenter: parent.verticalCenter
             text: qsTr("MUT")
             onClicked: {
@@ -41,17 +42,24 @@ SwipeDelegate {
             }
         }
 
-//        ColorOverlay{
-//            source:iconLeft
-//            anchors.fill: iconLeft
-//            //color:Material.foreground
-//            cached: true
-//        }
 
+        Image {
+            id: playImg
+            anchors.left: mutBtn.right
+            anchors.leftMargin: 4
+            //anchors.horizontalCenter: parent.horizontalCenter
+            opacity: swipeDelegate.pressed ? 0.8 :0.4
+            anchors.verticalCenter: parent.verticalCenter
+            //anchors.horizontalCenter: parent.horizontalCenter
+            sourceSize.width: swipeDelegate.height * 0.4
+            sourceSize.height: sourceSize.height
+            source: "/assets/play.svg"
+
+        }
 
         Label{
-            //anchors.left: iconLeft.right
-            anchors.leftMargin: 16
+            anchors.left: playImg.right
+            anchors.leftMargin: 4
             //opacity: 0.60
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
@@ -62,6 +70,8 @@ SwipeDelegate {
         }
 
 
+
+
         Image {
             id: arrowImg
             anchors.right: parent.right
@@ -70,7 +80,7 @@ SwipeDelegate {
             //anchors.horizontalCenter: parent.horizontalCenter
             sourceSize.width: swipeDelegate.height * 0.4
             sourceSize.height: sourceSize.height
-            source: "/assets/next.svg"
+            source: "/assets/tune.svg"
 
         }
 
@@ -129,26 +139,54 @@ SwipeDelegate {
         clip: true
 
 
-        //SwipeDelegate.onClicked: view.model.remove(ourIndex)
-
-        Image {
-            id: editImg
-
+        ExportHandler{
+            id:exportHandler
             anchors.centerIn: parent
-            sourceSize.width: parent.height - (parent.height * 0.6)
-            sourceSize.height: sourceSize.height
-            source: "/assets/edit.svg"
-        }
-        ColorOverlay {
-            anchors.fill: editImg
-            source: editImg
-            color: "white"  // make image like it lays under red glass
+            width:parent.height
+            height: parent.height
+            anchors.leftMargin: 12
+            anchors.rightMargin: 12
+            //anchors.verticalCenter: parent.verticalCenter
+
+            onDone:{
+                swipe.close()
+            }
         }
 
-        MouseArea { //workaround for mobile
-            anchors.fill: parent
-            onClicked: swipeDelegate.editClicked(index)
-        }
+
+
+       ColorOverlay {
+           anchors.fill: exportHandler
+           source: exportHandler
+           color: "white"  // make image like it lays under red glass
+       }
+
+
+
+//        Image {
+//            id: editImg
+
+//            anchors.verticalCenter: parent.verticalCenter
+//            anchors.right: parent.right
+//            anchors.margins: 12
+//            sourceSize.width: parent.height - (parent.height * 0.6)
+//            sourceSize.height: sourceSize.height
+//            source: "/assets/tune.svg"
+//        }
+//        ColorOverlay {
+//            anchors.fill: editImg
+//            source: editImg
+//            color: "white"  // make image like it lays under red glass
+//        }
+
+//        MouseArea { //workaround for mobile
+//            anchors.fill: editImg
+//            onClicked:{
+//                swipe.close()
+//                swipeDelegate.editClicked(index)
+//            }
+
+//        }
     }
 
 }

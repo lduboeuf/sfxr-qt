@@ -26,8 +26,17 @@
         <file>SwipableItem.qml</file>
         <file>assets/edit.svg</file>
         <file>assets/edit-delete.svg</file>
-        <file>assets/go-previous.svg</file>
         <file>assets/next.svg</file>
         <file>assets/home.svg</file>
+        <file>assets/share.svg</file>
+        <file>assets/loop.svg</file>
+        <file>assets/tune.svg</file>
+        <file>assets/play.svg</file>
+        <file>assets/info.svg</file>
+        <file>About.qml</file>
+        <file>assets/back.svg</file>
+        <file>ubuntu_touch/UTFileExportHandler.qml</file>
+        <file>ubuntu_touch/UTFileExport.qml</file>
+        <file>ExportHandler.qml</file>
     </qresource>
 </RCC>

@@ -24,6 +24,10 @@ ApplicationWindow {
         row >= 0 ? soundListModel.soundForRow(row) : null;
     }
 
+    WavSaver {
+        id: wavSaver
+    }
+
     SoundPlayer {
         id: soundPlayer
         sound: root.sound
@@ -50,30 +54,83 @@ ApplicationWindow {
         }
     }
 
+
+
+    RowLayout {
+        id:headerRow
+        width:parent.width
+        height: title.implicitHeight * 2
+
+        ToolButton {
+            id: backBtn
+            visible: mainStack.depth > 1
+            anchors.left:  parent.left
+            anchors.verticalCenter: headerRow.verticalCenter
+            contentItem: Image {
+                fillMode: Image.Pad
+                sourceSize.width: headerRow.height  * 0.4
+                sourceSize.height: headerRow.height  * 0.4
+                source: "/assets/back.svg"
+            }
+            onClicked:{
+
+                mainStack.pop()
+
+            }
+
+         }
+
+
+
+        Label {
+            id:title
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            text: qsTr("Sfxr")
+            font.bold: true
+        }
+
+        ToolButton {
+            id: infoBtn
+            anchors.right:  parent.right
+            anchors.verticalCenter: headerRow.verticalCenter
+            contentItem: Image {
+                fillMode: Image.Pad
+                sourceSize.width: headerRow.height  * 0.4
+                sourceSize.height: headerRow.height  * 0.4
+                source: "/assets/info.svg"
+            }
+            onClicked:{
+
+                mainStack.push("qrc:/About.qml")
+
+            }
+
+         }
+
+
+
+    }
+
+    Rectangle {
+        width: parent.width
+        anchors.top: headerRow.bottom
+        color:"grey"
+        height: 1
+    }
+
+
     Item {
         id:container
+
 
         ColumnLayout {
 
             anchors.fill: parent
+            anchors.topMargin: headerRow.height + 12
+
+
             spacing: 24
-
-
-            Label {
-                id:title
-                anchors.horizontalCenter: parent.horizontalCenter
-                text: qsTr("sfxr")
-                font.pixelSize: Qt.application.font.pixelSize * 1.2
-            }
-
-            Rectangle {
-                width: parent.width
-                anchors.bottom: title.bottom
-                color:"grey"
-                height: 1
-            }
-
-
 
             SoundSampleGenerators{
                 id: generators
@@ -88,6 +145,7 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 onCurrentSoundClicked: {
+                    console.log("olala")
                     soundPlayer.play();
                 }
                 onSoundSelected: {
@@ -101,6 +159,7 @@ ApplicationWindow {
     StackView{
         id:mainStack
         anchors.fill: parent
+
         initialItem: container
     }
 

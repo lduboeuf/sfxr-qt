@@ -33,7 +33,7 @@ ColumnLayout {
             }
 
             onEditClicked: {
-              soundSelected(model.text)
+                soundSelected(model.text)
                 swipe.close()
             }
 
@@ -49,6 +49,7 @@ ColumnLayout {
                         selectAnother();
                     }
                     root.model.remove(model.index);
+                    console.log("ok removed")
                 }
 
                 function selectAnother() {

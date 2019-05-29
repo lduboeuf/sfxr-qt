@@ -1,5 +1,9 @@
 #include <QApplication>
 #include <QIcon>
+#include <QDir>
+#include <QDebug>
+#include <QQmlContext>
+#include <QStandardPaths>
 #include <QQmlApplicationEngine>
 
 #include "generator.h"
@@ -15,8 +19,8 @@ int main(int argc, char* argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QApplication app(argc, argv);
-    app.setOrganizationDomain("agateau.com");
-    app.setApplicationName("sfxr-qt");
+    app.setOrganizationName("me.lduboeuf.sfxr");
+    app.setApplicationName("sfxr");
     app.setApplicationDisplayName("SFXR Qt");
 
 
@@ -27,6 +31,29 @@ int main(int argc, char* argv[]) {
     app.setWindowIcon(icon);
 
     QQmlApplicationEngine engine;
+
+#ifdef Q_OS_UBUNTU_TOUCH
+    QString localFolder = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    QFileInfo uDir(localFolder);
+    if (!uDir.exists())
+    {
+        // The modules directory doesn't exist, lets create it.
+        qDebug() << "Creating directory " << QDir::toNativeSeparators(uDir.filePath());
+        if (!QDir("/").mkpath(uDir.filePath()))
+        {
+            throw std::runtime_error(QString("Could not create directory: " +uDir.filePath()).toStdString());
+        }
+        QFileInfo uDir2(localFolder);
+        if (!uDir2.isWritable())
+        {
+            throw std::runtime_error(QString("Directory is not writable: " +uDir2.filePath()).toStdString());
+        }
+    }
+    engine.rootContext()->setContextProperty("UBUNTU_TOUCH", true);
+    engine.rootContext()->setContextProperty("appFolder", localFolder);
+#endif
+
+
     qmlRegisterType<Sound>("sfxr", 1, 0, "Sound");
     qmlRegisterType<SoundPlayer>("sfxr", 1, 0, "SoundPlayer");
     qmlRegisterType<Generator>("sfxr", 1, 0, "Generator");
