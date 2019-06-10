@@ -38,7 +38,13 @@ Page {
                 mainStack.pop()
             }
 
-         }
+            ColorOverlay {
+                anchors.fill: navImage
+                source: navImage
+                color: "white"
+            }
+
+        }
 
 
 
@@ -58,7 +64,7 @@ Page {
                 contentItem: Image {
                     id:loopImg
                     fillMode: Image.Pad
-                    opacity: (soundPlayer.loop) ? 1 : 0.4
+
                     sourceSize.width: headerRow.height  * 0.4
                     sourceSize.height: headerRow.height  * 0.4
                     anchors.verticalCenter: parent.verticalCenter
@@ -72,7 +78,15 @@ Page {
 
                 }
 
-             }
+
+                ColorOverlay {
+                    anchors.fill: loopImg
+                    opacity: (soundPlayer.loop) ? 1 : 0.4
+                    source: loopImg
+                    color: "white"
+                }
+
+            }
             ToolButton {
                 id:playBtn
                 contentItem: Image {
@@ -85,20 +99,34 @@ Page {
                     source: "/assets/play.svg"
                 }
                 onClicked: {
-                        soundPlayer.play();
+                    soundPlayer.play();
 
                 }
 
-             }
+
+                ColorOverlay {
+                    anchors.fill: playImg
+                    source: playImg
+                    color: "white"
+                }
+
+            }
 
 
         }
 
         ExportHandler{
+            id:exportHandler
             anchors.right:  parent.right
             width:headerRow.height
             height: width
             anchors.verticalCenter: parent.verticalCenter
+        }
+
+        ColorOverlay {
+            anchors.fill: exportHandler
+            source: exportHandler
+            color: "white"
         }
 
 
@@ -111,11 +139,10 @@ Page {
 
         Label {
             text: qsTr("Wave form")
+            font.bold: true
         }
         WaveFormSelector {
             width: parent.width
-            //Layout.fillWidth: true
-            //Layout.maximumWidth: homeEffect.width
             sound: root.sound
         }
 
@@ -138,54 +165,54 @@ Page {
         Column{
             anchors.fill: parent.contentItem
 
-        SliderGroup {
-            id:envelopGroup
-            width:parent.width
-            //anchors.fill: parent.contentItem
-            knobSize: swipeView.knobSize
+            SliderGroup {
+                id:envelopGroup
+                width:parent.width
+                //anchors.fill: parent.contentItem
+                knobSize: swipeView.knobSize
 
-            //width: parent.width
-            text: qsTr("Envelop")
-            sound: root.sound
-            model: ListModel {
-                ListElement {
-                    text: qsTr("Attack time")
-                    soundProperty: "attackTime"
-                }
-                ListElement {
-                    text: qsTr("Sustain time")
-                    soundProperty: "sustainTime"
-                }
-                ListElement {
-                    text: qsTr("Sustain punch")
-                    soundProperty: "sustainPunch"
-                }
-                ListElement {
-                    text: qsTr("Decay time")
-                    soundProperty: "decayTime"
+                //width: parent.width
+                text: qsTr("Envelop")
+                sound: root.sound
+                model: ListModel {
+                    ListElement {
+                        text: qsTr("Attack time")
+                        soundProperty: "attackTime"
+                    }
+                    ListElement {
+                        text: qsTr("Sustain time")
+                        soundProperty: "sustainTime"
+                    }
+                    ListElement {
+                        text: qsTr("Sustain punch")
+                        soundProperty: "sustainPunch"
+                    }
+                    ListElement {
+                        text: qsTr("Decay time")
+                        soundProperty: "decayTime"
+                    }
                 }
             }
-        }
 
-        SliderGroup {
-           //Layout.fillWidth: true
-            width:parent.width
-            knobSize: swipeView.knobSize
-            enabled: sound.waveType === 0
-            text: qsTr("Square")
-            sound: root.sound
-            model: ListModel {
-                ListElement {
-                    text: qsTr("Square duty")
-                    soundProperty: "squareDuty"
-                }
-                ListElement {
-                    text: qsTr("Duty sweep")
-                    soundProperty: "dutySweep"
-                    bipolar: true
+            SliderGroup {
+                //Layout.fillWidth: true
+                width:parent.width
+                knobSize: swipeView.knobSize
+                enabled: sound.waveType === 0
+                text: qsTr("Square")
+                sound: root.sound
+                model: ListModel {
+                    ListElement {
+                        text: qsTr("Square duty")
+                        soundProperty: "squareDuty"
+                    }
+                    ListElement {
+                        text: qsTr("Duty sweep")
+                        soundProperty: "dutySweep"
+                        bipolar: true
+                    }
                 }
             }
-        }
 
         }
 
@@ -278,8 +305,8 @@ Page {
 
 
             SliderGroup {
-               width: parent.width
-               knobSize: swipeView.knobSize
+                width: parent.width
+                knobSize: swipeView.knobSize
                 text: qsTr("Change")
                 sound: root.sound
                 model: ListModel {
@@ -308,108 +335,111 @@ Page {
             }
         }
 
-       // FrequencyEffect{}
-       // FilterEffect{}
-       // OthersEffect{}
+        // FrequencyEffect{}
+        // FilterEffect{}
+        // OthersEffect{}
 
     }
 
 
 
-//    StackView {
-//        id:pageStack
-//        anchors {
-//            top: waveFormRow.bottom
-//            left: parent.left
-//            right: parent.right
-//            bottom: parent.bottom
-//            margins: 12
-//        }
-//        pushEnter: Transition {
-//            PropertyAnimation {
-//                property: "opacity"
-//                from: 0
-//                to:1
-//                duration: 200
-//            }
-//            PropertyAnimation {
-//                property: "x"
-//                from: pageStack.width / 2
-//                //to:0
-//                duration: 200
-//            }
-//            PropertyAnimation {
-//                property: "y"
-//                from: pageStack.height / 2
-//                //to:0
-//                duration: 200
-//            }
-////            PropertyAnimation {
-////                property: "width"
-////                from: 1
-////                //to:pageStack.width
-////                duration: 200
-////            }
-////            PropertyAnimation {
-////                property: "height"
-////                from: 1
-////                //to:pageStack.height
-////                duration: 200
-////            }
-//            PropertyAnimation {
-//                property: "scale"
-//                from: 0
-//                to:1
-//                //to:pageStack.height
-//                duration: 200
-//            }
-//        }
-//        pushExit: Transition {
-//            PropertyAnimation {
-//                property: "opacity"
-//                from: 1
-//                to:0
-//                duration: 200
-//            }
-//        }
-//        popExit: Transition {
-//                PropertyAnimation {
-//                    property: "width"
-//                    to:1
-//                    duration: 200
-//                }
-//                PropertyAnimation {
-//                    property: "height"
-//                    to:1
-//                    duration: 200
-//                }
-//                PropertyAnimation {
-//                    property: "x"
-//                    to:pageStack.width / 2
-//                    duration: 200
-//                }
-//                PropertyAnimation {
-//                    property: "y"
-//                    to:pageStack.height / 2
-//                    duration: 200
-//                }
+    //    StackView {
+    //        id:pageStack
+    //        anchors {
+    //            top: waveFormRow.bottom
+    //            left: parent.left
+    //            right: parent.right
+    //            bottom: parent.bottom
+    //            margins: 12
+    //        }
+    //        pushEnter: Transition {
+    //            PropertyAnimation {
+    //                property: "opacity"
+    //                from: 0
+    //                to:1
+    //                duration: 200
+    //            }
+    //            PropertyAnimation {
+    //                property: "x"
+    //                from: pageStack.width / 2
+    //                //to:0
+    //                duration: 200
+    //            }
+    //            PropertyAnimation {
+    //                property: "y"
+    //                from: pageStack.height / 2
+    //                //to:0
+    //                duration: 200
+    //            }
+    ////            PropertyAnimation {
+    ////                property: "width"
+    ////                from: 1
+    ////                //to:pageStack.width
+    ////                duration: 200
+    ////            }
+    ////            PropertyAnimation {
+    ////                property: "height"
+    ////                from: 1
+    ////                //to:pageStack.height
+    ////                duration: 200
+    ////            }
+    //            PropertyAnimation {
+    //                property: "scale"
+    //                from: 0
+    //                to:1
+    //                //to:pageStack.height
+    //                duration: 200
+    //            }
+    //        }
+    //        pushExit: Transition {
+    //            PropertyAnimation {
+    //                property: "opacity"
+    //                from: 1
+    //                to:0
+    //                duration: 200
+    //            }
+    //        }
+    //        popExit: Transition {
+    //                PropertyAnimation {
+    //                    property: "width"
+    //                    to:1
+    //                    duration: 200
+    //                }
+    //                PropertyAnimation {
+    //                    property: "height"
+    //                    to:1
+    //                    duration: 200
+    //                }
+    //                PropertyAnimation {
+    //                    property: "x"
+    //                    to:pageStack.width / 2
+    //                    duration: 200
+    //                }
+    //                PropertyAnimation {
+    //                    property: "y"
+    //                    to:pageStack.height / 2
+    //                    duration: 200
+    //                }
 
-//            }
-//        popEnter: Transition {
-//                PropertyAnimation {
-//                    property: "opacity"
-//                    from: 0
-//                    to:1
-//                    duration: 200
-//                }
-//            }
-//        initialItem:menu
+    //            }
+    //        popEnter: Transition {
+    //                PropertyAnimation {
+    //                    property: "opacity"
+    //                    from: 0
+    //                    to:1
+    //                    duration: 200
+    //                }
+    //            }
+    //        initialItem:menu
 
-//    }
+    //    }
 
     footer: TabBar {
         id: tabBar
         currentIndex: swipeView.currentIndex
+        background: Rectangle {
+            color:"#333333"
+        }
 
         TabButton {
             text: qsTr("Envelop")

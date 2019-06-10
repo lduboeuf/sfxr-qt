@@ -21,15 +21,31 @@ Item {
         }
         onClicked:{
 
-            root.url= appFolder + "/output.wav"
-            console.log(root.url)
+            exportNameDialog.open()
+//            var r = Math.random().toString(36).substring(2, 7)
+//            root.url= appFolder + "/sfxr-"+ r +".wav"
+//            console.log(root.url)
+
+//            //save first locally before exporting
+//            wavSaver.save(sound, root.url);
+//            picker.show()
+
+        }
+
+     }
+
+    ExportDialog{
+        id: exportNameDialog
+        onAccepted: {
+
+            root.url= appFolder + "/" + fileName +".wav"
+
             //save first locally before exporting
             wavSaver.save(sound, root.url);
             picker.show()
 
         }
-
-     }
+    }
 
 
     UTFileExportHandler{

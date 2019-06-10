@@ -1,6 +1,7 @@
 import QtQuick 2.7
 import QtQuick.Layouts 1.3
 import QtQuick.Controls 2.0
+import QtGraphicalEffects 1.0
 import QtQuick.Dialogs 1.2
 
 import sfxr 1.0
@@ -67,6 +68,7 @@ ApplicationWindow {
             anchors.left:  parent.left
             anchors.verticalCenter: headerRow.verticalCenter
             contentItem: Image {
+                id:backImg
                 fillMode: Image.Pad
                 sourceSize.width: headerRow.height  * 0.4
                 sourceSize.height: headerRow.height  * 0.4
@@ -76,6 +78,12 @@ ApplicationWindow {
 
                 mainStack.pop()
 
+            }
+
+            ColorOverlay {
+                anchors.fill: backImg
+                source: backImg
+                color: "white"
             }
 
          }
@@ -95,6 +103,7 @@ ApplicationWindow {
             anchors.right:  parent.right
             anchors.verticalCenter: headerRow.verticalCenter
             contentItem: Image {
+                id:helpImg
                 fillMode: Image.Pad
                 sourceSize.width: headerRow.height  * 0.4
                 sourceSize.height: headerRow.height  * 0.4
@@ -104,6 +113,12 @@ ApplicationWindow {
 
                 mainStack.push("qrc:/About.qml")
 
+            }
+
+            ColorOverlay {
+                anchors.fill: helpImg
+                source: helpImg
+                color: "white"
             }
 
          }
@@ -145,7 +160,6 @@ ApplicationWindow {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 onCurrentSoundClicked: {
-                    console.log("olala")
                     soundPlayer.play();
                 }
                 onSoundSelected: {

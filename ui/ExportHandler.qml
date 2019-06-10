@@ -62,14 +62,10 @@ Item {
             }
 
             function onDone(){
-                console.log("kikou zozo done")
                 root.done()
             }
         }
     }
 
-//    Connections{
-//        target: exportHandler.item
-//        onDone: console.log("kikou done")
-//    }
+
 }

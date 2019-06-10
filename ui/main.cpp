@@ -34,6 +34,7 @@ int main(int argc, char* argv[]) {
 
 #ifdef Q_OS_UBUNTU_TOUCH
     QString localFolder = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
+    qDebug() << "local folder:" + localFolder;
     QFileInfo uDir(localFolder);
     if (!uDir.exists())
     {
@@ -48,10 +49,25 @@ int main(int argc, char* argv[]) {
         {
             throw std::runtime_error(QString("Directory is not writable: " +uDir2.filePath()).toStdString());
         }
+
+
+
     }
+    //clean generated sounds
+    QDir d(localFolder);
+    d.setNameFilters(QStringList() << "*.*");
+    d.setFilter(QDir::Files);
+    qDebug() << d.dirName();
+    foreach(QString dirFile, d.entryList())
+    {
+        qDebug() << dirFile;
+        d.remove(dirFile);
+    }
+
     engine.rootContext()->setContextProperty("UBUNTU_TOUCH", true);
     engine.rootContext()->setContextProperty("appFolder", localFolder);
 #endif
+
 
 
     qmlRegisterType<Sound>("sfxr", 1, 0, "Sound");

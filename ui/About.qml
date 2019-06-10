@@ -6,7 +6,7 @@ Item {
     id: helpScreen
 
     signal backPressed()
-    property real textSize :12
+    property real textSize :10
 //    property real textSize: Math.min(width, height) * 0.04 <= 0
 //                            ? 8
 //                            : Math.min(width, height) * 0.02

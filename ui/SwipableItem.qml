@@ -2,7 +2,6 @@ import QtQuick 2.9
 import QtQuick.Controls 2.2
 import QtQuick.Layouts 1.3
 import QtGraphicalEffects 1.0
-//import QtQuick.Controls.Material 2.1
 
 
 
@@ -31,64 +30,73 @@ SwipeDelegate {
             visible: false
         }
 
-        Button {
-            id:mutBtn
-            anchors.left: parent.left
-            //anchors.rightMargin: 12
-            anchors.verticalCenter: parent.verticalCenter
-            text: qsTr("MUT")
-            onClicked: {
-                generator.mutate(sound);
-            }
-        }
-
 
         Image {
             id: playImg
-            anchors.left: mutBtn.right
             anchors.leftMargin: 4
-            //anchors.horizontalCenter: parent.horizontalCenter
-            opacity: swipeDelegate.pressed ? 0.8 :0.4
             anchors.verticalCenter: parent.verticalCenter
-            //anchors.horizontalCenter: parent.horizontalCenter
             sourceSize.width: swipeDelegate.height * 0.4
             sourceSize.height: sourceSize.height
             source: "/assets/play.svg"
 
         }
 
+        ColorOverlay {
+            anchors.fill: playImg
+            opacity: swipeDelegate.pressed ? 0.8 :0.4
+            source: playImg
+            color: "white"
+        }
+
         Label{
             anchors.left: playImg.right
             anchors.leftMargin: 4
-            //opacity: 0.60
             anchors.verticalCenter: parent.verticalCenter
             anchors.horizontalCenter: parent.horizontalCenter
-            //color: Material.foreground
-            //font.pixelSize: Qt.application.font.pixelSize * 1.2
-            //anchors.left: parent.left
             text: model.text
         }
 
-
-
-
-        Image {
-            id: arrowImg
+        Row{
             anchors.right: parent.right
-            opacity: 0.60
-            anchors.verticalCenter: parent.verticalCenter
-            //anchors.horizontalCenter: parent.horizontalCenter
-            sourceSize.width: swipeDelegate.height * 0.4
-            sourceSize.height: sourceSize.height
-            source: "/assets/tune.svg"
+            spacing: 12
 
+
+
+
+            Button {
+                id:mutBtn
+                anchors.verticalCenter: parent.verticalCenter
+                text: qsTr("MUT")
+                onClicked: {
+                    generator.mutate(sound);
+                }
+            }
+
+            Button {
+                id:effectBtn
+                //anchors.left: parent.left
+                //anchors.right: parent.right
+                //anchors.rightMargin: 12
+                anchors.verticalCenter: parent.verticalCenter
+                contentItem: Image {
+                    id: arrowImg
+                    fillMode: Image.Pad
+                    source: "/assets/tune.svg"
+
+                }
+
+                ColorOverlay {
+                    anchors.fill: arrowImg
+                    source: arrowImg
+                    color: "white"
+                }
+
+                //text: qsTr("MUT")
+                onClicked: {
+                    swipeDelegate.editClicked(index)
+                }
+            }
         }
-
-        MouseArea {
-            anchors.fill: arrowImg
-            onClicked: swipeDelegate.editClicked(index)
-        }
-
 
 
     }
@@ -155,38 +163,13 @@ SwipeDelegate {
 
 
 
-       ColorOverlay {
-           anchors.fill: exportHandler
-           source: exportHandler
-           color: "white"  // make image like it lays under red glass
-       }
+        ColorOverlay {
+            anchors.fill: exportHandler
+            source: exportHandler
+            color: "white"
+        }
 
 
-
-//        Image {
-//            id: editImg
-
-//            anchors.verticalCenter: parent.verticalCenter
-//            anchors.right: parent.right
-//            anchors.margins: 12
-//            sourceSize.width: parent.height - (parent.height * 0.6)
-//            sourceSize.height: sourceSize.height
-//            source: "/assets/tune.svg"
-//        }
-//        ColorOverlay {
-//            anchors.fill: editImg
-//            source: editImg
-//            color: "white"  // make image like it lays under red glass
-//        }
-
-//        MouseArea { //workaround for mobile
-//            anchors.fill: editImg
-//            onClicked:{
-//                swipe.close()
-//                swipeDelegate.editClicked(index)
-//            }
-
-//        }
     }
 
 }

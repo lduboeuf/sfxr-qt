@@ -151,9 +151,10 @@ void SoundPlayer::sdlAudioCallback(unsigned char* stream, int len) {
 void SoundPlayer::registerCallback() {
     SDL_AudioSpec des;
     des.freq = 44100;
+    //des.freq = 16000;
     des.format = AUDIO_S16SYS;
     des.channels = 1;
-    des.samples = 512;
+    des.samples = 4096;
     des.callback = staticSdlAudioCallback;
     des.userdata = this;
 
