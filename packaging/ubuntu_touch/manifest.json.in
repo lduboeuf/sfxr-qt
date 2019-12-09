@@ -1,7 +1,7 @@
 {
     "name": "me.lduboeuf.sfxr",
     "description": "Sound Effect Generator",
-    "architecture": "armhf",
+    "architecture": "@CLICK_ARCH@",
     "title": "hw",
     "hooks": {
         "sfxr": {

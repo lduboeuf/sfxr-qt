@@ -80,8 +80,15 @@ target_link_libraries(sfxr-qt SDL2 Qt5::Widgets Qt5::Quick)
 if (UBUNTU_TOUCH)
     message("Building for Ubuntu Touch")
 
+    execute_process(
+        COMMAND dpkg-architecture -qDEB_HOST_ARCH
+        OUTPUT_VARIABLE CLICK_ARCH
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+    )
+
     set(UT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/packaging/ubuntu_touch)
-    install(FILES ${UT_PATH}/manifest.json DESTINATION /)
+    configure_file(${UT_PATH}/manifest.json.in ${CMAKE_CURRENT_BINARY_DIR}/manifest.json)
+    install(FILES ${CMAKE_CURRENT_BINARY_DIR}/manifest.json DESTINATION /)
     install(FILES ${UT_PATH}/sfxr.apparmor DESTINATION /)
     install(FILES ${UT_PATH}/sfxr.png DESTINATION /)
     install(FILES ${UT_PATH}/sfxr.desktop DESTINATION /)
