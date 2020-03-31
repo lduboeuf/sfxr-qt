@@ -1,21 +1,54 @@
 
 import QtQuick 2.0
 import QtQuick.Controls 2.2
+import QtGraphicalEffects 1.0
+import QtQuick.Layouts 1.3
 
-Item {
+Page {
     id: helpScreen
-
     signal backPressed()
     property real textSize :10
-//    property real textSize: Math.min(width, height) * 0.04 <= 0
-//                            ? 8
-//                            : Math.min(width, height) * 0.02
 
-    //width: 500
-    //height: 360
-    //radius: 4
-    //color: "#999999"
     clip: true
+
+    header: RowLayout {
+        id:headerRow
+        width:parent.width
+        height: title.implicitHeight * 2
+
+        ToolButton {
+            id: backBtn
+            anchors.left:  parent.left
+            anchors.verticalCenter: headerRow.verticalCenter
+            contentItem: Image {
+                id:backImg
+                fillMode: Image.Pad
+                sourceSize.width: headerRow.height  * 0.4
+                sourceSize.height: headerRow.height  * 0.4
+                source: "/assets/back.svg"
+            }
+            onClicked:{
+
+                mainStack.pop()
+
+            }
+
+            ColorOverlay {
+                anchors.fill: backImg
+                source: backImg
+                color: "white"
+            }
+
+        }
+
+        Label {
+            id:title
+            anchors.horizontalCenter: parent.horizontalCenter
+            anchors.verticalCenter: parent.verticalCenter
+            text: qsTr("About")
+            font.bold: true
+        }
+    }
 
 
 
@@ -85,6 +118,8 @@ For an introduction to sound theory: <a href=\"http://www.drpetter.se/article_so
 <p>
   <a rel=\"noopener\" href=\"http://www.drpetter.se/\">Tomas Pettersson</a>, 2007<br />
   <a href=\"https://stammel.net/\">Guido Stammel</a>, 2018<br />
+  <a href=\"https://github.com/agateau/\">Aurélien Gâteau</a>, 2019<br />
+<a href=\"https://github.com/lduboeuf/\">Lionel Duboeuf</a>, 2019<br />
   <a href=\"https://github.com/ubports/ubuntu-themes\">Suru svg icons </a><br />
   Home icon made by <a href=\"https://www.flaticon.com/authors/darius-dan\">Darius Dan</a>
 </p>

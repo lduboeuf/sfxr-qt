@@ -1,24 +1,24 @@
-#include "soundplayer.h"
+#include "SoundPlayer.h"
 
 #include <QTimer>
 
 #include <SDL2/SDL.h>
 
-#include <sound.h>
-#include <synthesizer.h>
+#include <Sound.h>
+#include <Synthesizer.h>
 
 static const int SCHEDULED_PLAY_DELAY = 200;
 
 class BufferStrategy : public Synthesizer::SynthStrategy {
 public:
-    BufferStrategy(float* buffer)
-        : buffer(buffer) {
+    BufferStrategy(qreal* buffer) : buffer(buffer) {
     }
-    void write(float ssample) override {
-        *buffer++ = qBound(-1.f, ssample, 1.f);;
+    void write(qreal ssample) override {
+        *buffer++ = qBound(-1., ssample, 1.);
     }
+
 private:
-    float* buffer;
+    qreal* buffer;
 };
 
 SoundPlayer::SoundPlayer(QObject* parent)
@@ -52,7 +52,7 @@ void SoundPlayer::setSound(Sound* value) {
     }
     mSound = value;
     if (mSound) {
-        connect(mSound, &Sound::waveTypeChanged, this, &SoundPlayer::onSoundModified);
+        connect(mSound, &Sound::waveFormChanged, this, &SoundPlayer::onSoundModified);
 
         connect(mSound, &Sound::attackTimeChanged, this, &SoundPlayer::onSoundModified);
         connect(mSound, &Sound::sustainTimeChanged, this, &SoundPlayer::onSoundModified);
@@ -131,12 +131,12 @@ void SoundPlayer::sdlAudioCallback(unsigned char* stream, int len) {
     QMutexLocker lock(&mMutex);
     if (mPlayThreadData.playing) {
         unsigned int l = len / 2;
-        float fbuf[l];
+        qreal fbuf[l];
         memset(fbuf, 0, sizeof(fbuf));
         BufferStrategy strategy(fbuf);
         mPlayThreadData.playing = mPlayThreadData.synth->synthSample(l, &strategy);
         while (l--) {
-            float f = qBound(-1.f, fbuf[l], 1.f);
+            qreal f = qBound(-1., fbuf[l], 1.);
             ((Sint16*)stream)[l] = (Sint16)(f * 32767);
         }
         if (mPlayThreadData.loop && !mPlayThreadData.playing) {
@@ -151,7 +151,6 @@ void SoundPlayer::sdlAudioCallback(unsigned char* stream, int len) {
 void SoundPlayer::registerCallback() {
     SDL_AudioSpec des;
     des.freq = 44100;
-    //des.freq = 16000;
     des.format = AUDIO_S16SYS;
     des.channels = 1;
     des.samples = 4096;

@@ -1,7 +1,9 @@
 #ifndef SOUND_H
 #define SOUND_H
 
-#include "basesound.h"
+#include "BaseSound.h"
+
+#include <Result.h>
 
 class Sound : public BaseSound {
     Q_OBJECT
@@ -10,9 +12,8 @@ public:
 
     void resetParams();
     void fromOther(const Sound* other);
-    Q_INVOKABLE bool load(const QUrl& url);
-    Q_INVOKABLE bool save(const QUrl& url);
-
+    Q_INVOKABLE Result load(const QUrl& url);
+    Q_INVOKABLE Result save(const QUrl& url);
     QString name() const override;
 
     bool hasRealUrl() const override;

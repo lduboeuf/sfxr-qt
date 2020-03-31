@@ -17,11 +17,29 @@ ColumnLayout {
         text: qsTr("Sounds")
     }
 
+    Component {
+        id:sectionDelegate
+        Rectangle {
+            width: container.width
+            height: childrenRect.height
+            color: "lightsteelblue"
+
+            Text {
+                text: section
+                font.bold: true
+                font.pixelSize: 20
+            }
+        }
+    }
+
     ListView {
         id: listView
         Layout.fillWidth: true
         Layout.fillHeight: true
         clip: true
+        section.property: "category"
+        section.criteria: ViewSection.FullString
+        section.delegate: sectionDelegate
         delegate:SwipableItem {
             highlighted: model.index === listView.currentIndex
             onClicked: {

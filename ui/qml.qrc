@@ -36,5 +36,11 @@
         <file>ExportHandler.qml</file>
         <file>ToolButton.qml</file>
         <file>ubuntu_touch/ExportDialog.qml</file>
+        <file>SoundItem.qml</file>
+        <file>assets/go-next.svg</file>
+        <file>assets/go-down.svg</file>
+        <file>Home.qml</file>
+        <file>assets/add-to-playlist.svg</file>
+        <file>assets/undo.svg</file>
     </qresource>
 </RCC>

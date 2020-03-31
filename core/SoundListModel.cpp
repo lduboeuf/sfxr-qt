@@ -1,12 +1,11 @@
-#include "soundlistmodel.h"
+#include "SoundListModel.h"
 
-#include "sound.h"
+#include "Sound.h"
 
 #include <algorithm>
 
-SoundListModel::SoundListModel(QObject* parent)
-    : BaseSoundListModel(parent) {
-    addNew(new Sound);
+SoundListModel::SoundListModel(QObject* parent) : BaseSoundListModel(parent) {
+    // mItems = std::make_unique<Sound>();
 }
 
 int SoundListModel::rowCount(const QModelIndex& parent) const {
@@ -32,14 +31,17 @@ QVariant SoundListModel::data(const QModelIndex& index, int role) const {
         return sound->name();
     case SoundRole:
         return QVariant::fromValue(sound);
+    case CategoryRole:
+        return sound->category();
     }
     return QVariant();
 }
 
 QHash<int, QByteArray> SoundListModel::roleNames() const {
     return {
-        { TextRole, "text" },
-        { SoundRole, "sound" },
+        {TextRole, "text"},
+        {SoundRole, "sound"},
+        {CategoryRole, "category"}
     };
 }
 
@@ -47,9 +49,7 @@ void SoundListModel::addNew(Sound* sound) {
     beginInsertRows(QModelIndex(), 0, 0);
     mItems.insert(mItems.begin(), std::unique_ptr<Sound>(sound));
     endInsertRows();
-    connect(sound, &Sound::nameChanged, this, [this, sound] {
-        onSoundNameChanged(sound);
-    });
+    connect(sound, &Sound::nameChanged, this, [this, sound] { onSoundNameChanged(sound); });
     countChanged(count());
 }
 
@@ -71,9 +71,10 @@ void SoundListModel::resetSoundAtRow(int row) {
 }
 
 void SoundListModel::onSoundNameChanged(Sound* sound) {
-    auto it = std::find_if(mItems.begin(), mItems.end(), [sound](const std::unique_ptr<Sound>& rowSound) {
-        return sound == rowSound.get();
-    });
+    auto it =
+        std::find_if(mItems.begin(), mItems.end(), [sound](const std::unique_ptr<Sound>& rowSound) {
+            return sound == rowSound.get();
+        });
     Q_ASSERT(it != mItems.end());
     int row = int(std::distance(mItems.begin(), it));
     QModelIndex idx = index(row);

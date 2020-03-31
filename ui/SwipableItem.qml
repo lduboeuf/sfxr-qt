@@ -8,11 +8,13 @@ import QtGraphicalEffects 1.0
 SwipeDelegate {
     id: swipeDelegate
     width: parent.width
-
+    height: lbl.implicitHeight + spacing * 2
+    spacing: 16
 
     signal removeClicked(int index)
     signal editClicked(int index)
     signal itemClicked(int index)
+    signal muteSoundRequested()
 
 
     property string iconSource : ""
@@ -20,21 +22,10 @@ SwipeDelegate {
 
 
     contentItem: RowLayout {
-        width: parent.width
-        height: parent.height
         spacing: 16
-
-        Label{
-            id: indexLabel
-            text:index + 1
-            visible: false
-        }
-
 
         Image {
             id: playImg
-            anchors.leftMargin: 4
-            anchors.verticalCenter: parent.verticalCenter
             sourceSize.width: swipeDelegate.height * 0.4
             sourceSize.height: sourceSize.height
             source: "/assets/play.svg"
@@ -48,35 +39,39 @@ SwipeDelegate {
             color: "white"
         }
 
+
         Label{
-            anchors.left: playImg.right
-            anchors.leftMargin: 4
-            anchors.verticalCenter: parent.verticalCenter
-            anchors.horizontalCenter: parent.horizontalCenter
+            id: indexLabel
+            text:index + 1
+            visible: false
+        }
+
+
+
+        Label{
+            id:lbl
             text: model.text
         }
 
+
+
+
+
         Row{
             anchors.right: parent.right
+            Layout.alignment: Qt.AlignVCenter
+            height: parent.height
             spacing: 12
-
-
-
 
             Button {
                 id:mutBtn
                 anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("MUT")
-                onClicked: {
-                    generator.mutate(sound);
-                }
+                onClicked: swipeDelegate.muteSoundRequested()
             }
 
             Button {
                 id:effectBtn
-                //anchors.left: parent.left
-                //anchors.right: parent.right
-                //anchors.rightMargin: 12
                 anchors.verticalCenter: parent.verticalCenter
                 contentItem: Image {
                     id: arrowImg
@@ -91,7 +86,6 @@ SwipeDelegate {
                     color: "white"
                 }
 
-                //text: qsTr("MUT")
                 onClicked: {
                     swipeDelegate.editClicked(index)
                 }

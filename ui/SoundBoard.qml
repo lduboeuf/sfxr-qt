@@ -10,140 +10,161 @@ Page {
     id:homeEffect
     topPadding: 12
 
-    header:RowLayout{
-        id:headerRow
-        height: titleLbl.implicitHeight * 3
+    header:ToolBar {
+        RowLayout{
+            id:headerRow
+            anchors.fill: parent
 
-        Rectangle {
-            width: parent.width
-            anchors.bottom: parent.bottom
-            color:"grey"
-            height: 1
-        }
-
-        ToolButton {
-            id: toolButtonLeft
-            anchors.left: parent.left
-            contentItem: Image {
-                id:navImage
-                fillMode: Image.Pad
-                sourceSize.width: headerRow.height  * 0.4
-                sourceSize.height: headerRow.height  * 0.4
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.horizontalCenter: parent.horizontalCenter
-                source: "/assets/home.svg"
-            }
-            onClicked:{
-                soundPlayer.loop = checked;
-                mainStack.pop()
-            }
-
-            ColorOverlay {
-                anchors.fill: navImage
-                source: navImage
-                color: "white"
-            }
-
-        }
-
-
-
-        Row {
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-
-            Label {
-                id:titleLbl
-                anchors.verticalCenter: parent.verticalCenter
-                text: qsTr("sound: ") + root.selectedSoundName
+            Rectangle {
+                width: parent.width
+                anchors.bottom: parent.bottom
+                color:"grey"
+                height: 1
             }
 
             ToolButton {
-                id:loopBtn
-                //enabled: false
+                id: toolButtonLeft
+                anchors.left: parent.left
                 contentItem: Image {
-                    id:loopImg
+                    id:navImage
                     fillMode: Image.Pad
-
                     sourceSize.width: headerRow.height  * 0.4
                     sourceSize.height: headerRow.height  * 0.4
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
-                    source: "/assets/loop.svg"
+                    source: "/assets/back.svg"
                 }
-                onClicked: {
-                    soundPlayer.loop = !soundPlayer.loop;
-                    if (soundPlayer.loop)
-                        soundPlayer.play();
-
+                onClicked:{
+                    soundPlayer.loop = checked;
+                    mainStack.pop()
                 }
-
 
                 ColorOverlay {
-                    anchors.fill: loopImg
-                    opacity: (soundPlayer.loop) ? 1 : 0.4
-                    source: loopImg
+                    anchors.fill: navImage
+                    source: navImage
                     color: "white"
                 }
 
             }
-            ToolButton {
-                id:playBtn
-                contentItem: Image {
+
+            Label {
+                id:titleLbl
+                anchors.centerIn: parent
+                text: qsTr("sound: ") + main.sound.name
+                color: titleLblMouseArea.pressed ? Qt.darker("white") : "white"
+
+                MouseArea {
+                    id:titleLblMouseArea
+                    anchors.fill: parent
+                    onClicked:soundPlayer.play();
+                }
+
+                Image {
                     id:playImg
                     fillMode: Image.Pad
+                    opacity: 0
                     sourceSize.width: headerRow.height  * 0.4
                     sourceSize.height: headerRow.height  * 0.4
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.horizontalCenter: parent.horizontalCenter
                     source: "/assets/play.svg"
                 }
-                onClicked: {
-                    soundPlayer.play();
-
-                }
-
 
                 ColorOverlay {
                     anchors.fill: playImg
                     source: playImg
+                    opacity: titleLblMouseArea.pressed ? 1: 0
                     color: "white"
                 }
+            }
+
+            ToolButton {
+                id: menuButton
+                //anchors.right:  parent.right
+                anchors.right: parent.right
+                width:headerRow.height
+                //height: width
+                text: "⋮"
+                onClicked: menu.open()
+
+                Menu {
+                    id: menu
+                    width: menuButton.width
+                    y: menuButton.height
+
+                    MenuItem {
+                        text: "Loop"
+                        ToolButton {
+                            id:loopBtn
+                            //enabled: false
+                            contentItem: Image {
+                                id:loopImg
+                                fillMode: Image.Pad
+                                sourceSize.width: headerRow.height  * 0.4
+                                sourceSize.height: headerRow.height  * 0.4
+                                anchors.centerIn: loopBtn
+                                source: "/assets/loop.svg"
+                            }
+                            onClicked: {
+                                soundPlayer.loop = !soundPlayer.loop;
+                                if (soundPlayer.loop)
+                                    soundPlayer.play();
+
+                               // menu.close()
+
+                            }
+
+
+                            ColorOverlay {
+                                anchors.fill: loopImg
+                                opacity: (soundPlayer.loop) ? 1 : 0.4
+                                source: loopImg
+                                color: "white"
+                            }
+
+                        }
+                    }
+
+                    MenuItem {
+                        text: "Export"
+                        ExportHandler{
+                            id:exportHandler
+                            width: menuButton.width
+                            height: menuButton.height
+                        }
+
+                        ColorOverlay {
+                            anchors.fill: exportHandler
+                            source: exportHandler
+                            color: "white"
+                        }
+
+                    }
+
+                    enter: Transition {
+                        NumberAnimation { property: "opacity"; from: 0.0; to: 1.0 }
+                    }
+
+                }
+
 
             }
 
-
         }
-
-        ExportHandler{
-            id:exportHandler
-            anchors.right:  parent.right
-            width:headerRow.height
-            height: width
-            anchors.verticalCenter: parent.verticalCenter
-        }
-
-        ColorOverlay {
-            anchors.fill: exportHandler
-            source: exportHandler
-            color: "white"
-        }
-
-
     }
-
 
     ColumnLayout {
         id: waveFormRow
         width: parent.width
+        Layout.fillWidth: true
 
         Label {
             text: qsTr("Wave form")
             font.bold: true
         }
         WaveFormSelector {
-            width: parent.width
-            sound: root.sound
+            width: waveFormRow.width
+            sound: main.sound
         }
 
 
@@ -173,7 +194,7 @@ Page {
 
                 //width: parent.width
                 text: qsTr("Envelop")
-                sound: root.sound
+                sound: main.sound
                 model: ListModel {
                     ListElement {
                         text: qsTr("Attack time")
@@ -200,7 +221,7 @@ Page {
                 knobSize: swipeView.knobSize
                 enabled: sound.waveType === 0
                 text: qsTr("Square")
-                sound: root.sound
+                sound: main.sound
                 model: ListModel {
                     ListElement {
                         text: qsTr("Square duty")
@@ -220,7 +241,7 @@ Page {
             anchors.fill: parent.contentItem
             knobSize: swipeView.knobSize
             text: qsTr("Frequency")
-            sound: root.sound
+            sound: main.sound
             model: ListModel {
                 ListElement {
                     text: qsTr("Start frequency")
@@ -254,7 +275,7 @@ Page {
             anchors.fill: parent.contentItem
             knobSize: swipeView.knobSize
             text: qsTr("Filters")
-            sound: root.sound
+            sound: main.sound
             model: ListModel {
                 ListElement {
                     text: qsTr("LP filter cutoff")
@@ -288,7 +309,7 @@ Page {
                 width: parent.width
                 knobSize: swipeView.knobSize
                 text: qsTr("Phaser")
-                sound: root.sound
+                sound: main.sound
                 model: ListModel {
                     ListElement {
                         text: qsTr("Phaser offset")
@@ -308,7 +329,7 @@ Page {
                 width: parent.width
                 knobSize: swipeView.knobSize
                 text: qsTr("Change")
-                sound: root.sound
+                sound: main.sound
                 model: ListModel {
                     ListElement {
                         text: qsTr("Change amount")
@@ -325,7 +346,7 @@ Page {
                 width: parent.width
                 knobSize: swipeView.knobSize
                 text: qsTr("Repeat")
-                sound: root.sound
+                sound: main.sound
                 model: ListModel {
                     ListElement {
                         text: qsTr("Repeat speed")
@@ -454,5 +475,6 @@ Page {
             text: qsTr("Others")
         }
     }
+
 
 }

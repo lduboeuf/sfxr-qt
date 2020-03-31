@@ -25,6 +25,7 @@ Dialog {
         }
         TextField {
             id: name
+            color: "black"
             focus: true
             maximumLength: 18
             placeholderText: qsTr("sound name")

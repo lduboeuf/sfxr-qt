@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.4
 import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.2
 //export
@@ -15,7 +15,7 @@ Item {
         nameFilters: [qsTr("Wav files") + " (*.wav)",
             qsTr("All files") + " (*)"]
         onAccepted: {
-            wavSaver.save(sound, fileUrl);
+            wavSaver.save(main.sound, fileUrl);
             root.done()
         }
     }

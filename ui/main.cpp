@@ -6,13 +6,12 @@
 #include <QStandardPaths>
 #include <QQmlApplicationEngine>
 
-#include "generator.h"
-#include "soundlistmodel.h"
-#include "sound.h"
-#include "soundplayer.h"
-#include "wavsaver.h"
-
-#include <SDL.h>
+#include "Generator.h"
+#include "Sound.h"
+#include "SoundListModel.h"
+#include "SoundPlayer.h"
+#include "WavSaver.h"
+#include "Result.h"
 
 int main(int argc, char* argv[]) {
 
@@ -29,6 +28,18 @@ int main(int argc, char* argv[]) {
         icon.addFile(QString(":/icons/sfxr-qt-%1.png").arg(size));
     }
     app.setWindowIcon(icon);
+
+    qmlRegisterType<Sound>("sfxr", 1, 0, "Sound");
+    qmlRegisterType<SoundPlayer>("sfxr", 1, 0, "SoundPlayer");
+    qmlRegisterType<Generator>("sfxr", 1, 0, "Generator");
+    qmlRegisterType<SoundListModel>("sfxr", 1, 0, "SoundListModel");
+    qmlRegisterType<WavSaver>("sfxr", 1, 0, "WavSaver");
+    qmlRegisterUncreatableMetaObject(
+        WaveForm::staticMetaObject, "sfxr", 1, 0, "WaveForm", "Only enums");
+
+    //WaveForm::registerType();
+    Result::registerType();
+
 
     QQmlApplicationEngine engine;
 
@@ -68,13 +79,6 @@ int main(int argc, char* argv[]) {
     engine.rootContext()->setContextProperty("appFolder", localFolder);
 #endif
 
-
-
-    qmlRegisterType<Sound>("sfxr", 1, 0, "Sound");
-    qmlRegisterType<SoundPlayer>("sfxr", 1, 0, "SoundPlayer");
-    qmlRegisterType<Generator>("sfxr", 1, 0, "Generator");
-    qmlRegisterType<SoundListModel>("sfxr", 1, 0, "SoundListModel");
-    qmlRegisterType<WavSaver>("sfxr", 1, 0, "WavSaver");
     engine.load(QUrl(QStringLiteral("qrc:/main_mobile.qml")));
 
     return app.exec();

@@ -1,7 +1,12 @@
-project(sfxr-qt C CXX)
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.5)
+project(sfxr-qt)
 
-string(REGEX REPLACE "gcc$" "g++" CMAKE_CXX_COMPILER "${CMAKE_CXX_COMPILER}")
+find_package(Qt5Core)
+find_package(Qt5Qml)
+find_package(Qt5Quick)
+find_package(Qt5Widgets)
+
+#string(REGEX REPLACE "gcc$" "g++" CMAKE_CXX_COMPILER "${CMAKE_CXX_COMPILER}")
 
 #LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/lib")
 
@@ -13,16 +18,13 @@ execute_process(
 )
 
 set(CMAKE_AUTOMOC ON)
-set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_CXX_EXTENSIONS OFF)
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Woverloaded-virtual")
+#set(CMAKE_CXX_STANDARD_REQUIRED ON)
+#set(CMAKE_CXX_EXTENSIONS OFF)
 
 #find_package(SDL2 REQUIRED)
 #find_package(Qt5 REQUIRED Gui Quick Widgets)
-find_package(Qt5Core)
-find_package(Qt5Qml)
-find_package(Qt5Quick)
-find_package(Qt5Widgets)
 #include(qpropgen/cmake/qpropgen.cmake)
 
 #set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
@@ -34,36 +36,55 @@ find_package(Qt5Widgets)
 #set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Woverloaded-virtual -std=c++11")
 
 
-include_directories(
-    ${CMAKE_CURRENT_LIST_DIR}/lib/SDL2/include
-    core
-    ${CMAKE_CURRENT_BINARY_DIR}/core
+
+
+set(sfxr_qt_lib_SRCS
+    core/BaseSoundListModel.cpp
+    core/BaseWavSaver.cpp
+    core/Synthesizer.cpp
+    core/NoiseGenerator.cpp
+    core/WavSaver.cpp
+    core/BaseSound.cpp
+    core/Sound.cpp
+    core/SoundUtils.cpp
+    core/SoundPlayer.cpp
+    core/SoundListModel.cpp
+    core/SoundIO.cpp
+    core/Result.cpp
+    core/WaveForm.cpp
 )
 
-set(SRCS
-    ui/main.cpp
-    core/synthesizer.cpp
-    core/generator.cpp
-    core/noisegenerator.cpp
-    core/wavsaver.cpp
-    core/sound.cpp
-    core/soundplayer.cpp
-    core/soundlistmodel.cpp
-    core/basesound.cpp
-    core/basesoundlistmodel.cpp
-    core/basewavsaver.cpp
-)
-
-
-qt5_add_resources(QRC_SRCS ui/qml.qrc)
+add_library(sfxr-qt-lib STATIC ${sfxr_qt_lib_SRCS})
 
 
 #include SDL2 sources
 add_subdirectory(lib)
+target_link_libraries(sfxr-qt-lib SDL2 Qt5::Qml Qt5::Core)
 
-add_executable(sfxr-qt ${SRCS} ${QRC_SRCS})
-target_link_libraries(sfxr-qt SDL2 Qt5::Widgets Qt5::Quick)
+target_include_directories(sfxr-qt-lib
+    PUBLIC core
+    PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/core
+    PRIVATE ${CMAKE_CURRENT_LIST_DIR}/lib/SDL2/include
+)
 
+# sfxr-qt
+set(sfxr_qt_app_SRCS
+    ui/main.cpp
+    ui/Generator.cpp
+)
+
+qt5_add_resources(QRC_SRCS ui/qml.qrc)
+
+add_executable(sfxr-qt ${sfxr_qt_app_SRCS} ${QRC_SRCS})
+target_link_libraries(sfxr-qt
+    sfxr-qt-lib
+    Qt5::Widgets
+    Qt5::Quick
+)
+
+target_include_directories(sfxr-qt
+    PRIVATE ui
+)
 #execute_process(
 #    COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH
 #    OUTPUT_VARIABLE ARCH_TRIPLET
@@ -80,11 +101,21 @@ target_link_libraries(sfxr-qt SDL2 Qt5::Widgets Qt5::Quick)
 if (UBUNTU_TOUCH)
     message("Building for Ubuntu Touch")
 
-    execute_process(
-        COMMAND dpkg-architecture -qDEB_HOST_ARCH
-        OUTPUT_VARIABLE CLICK_ARCH
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-    )
+    #execute_process(
+    #    COMMAND dpkg-architecture -qDEB_HOST_ARCH
+    #    OUTPUT_VARIABLE CLICK_ARCH
+    #    OUTPUT_STRIP_TRAILING_WHITESPACE
+    #)
+    if(DEFINED ENV{ARCH})
+        set(CLICK_ARCH "$ENV{ARCH}")
+    else()
+        execute_process(
+            COMMAND dpkg-architecture -qDEB_HOST_ARCH
+            OUTPUT_VARIABLE CLICK_ARCH
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+        )
+    endif()
+
 
     set(UT_PATH ${CMAKE_CURRENT_SOURCE_DIR}/packaging/ubuntu_touch)
     configure_file(${UT_PATH}/manifest.json.in ${CMAKE_CURRENT_BINARY_DIR}/manifest.json)

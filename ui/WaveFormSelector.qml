@@ -8,40 +8,49 @@ RowLayout {
     id: root
     property Sound sound
 
-    ButtonGroup {
-        buttons: root.children
-        checkedButton: buttons[sound.waveType]
-        onCheckedButtonChanged: {
-            for (var i = 0; i < buttons.length; ++i) {
-                if (buttons[i].checked) {
-                    sound.waveType = i;
-                    return;
-                }
-            }
+    ListModel {
+        id: waveFormModel
+        // Must be kept in sync with WaveForm::Enum in WaveForm.h
+        ListElement {
+            waveForm: WaveForm.Square
+            text: qsTr("Square")
+        }
+        ListElement {
+            waveForm: WaveForm.Sawtooth
+            text: qsTr("Sawtooth")
+        }
+        ListElement {
+            waveForm: WaveForm.Triangle
+            text: qsTr("Triangle")
+        }
+        ListElement {
+            waveForm: WaveForm.Sine
+            text: qsTr("Sine")
+        }
+        ListElement {
+            waveForm: WaveForm.Noise
+            text: qsTr("Noise")
         }
     }
 
-    Button {
-        Layout.fillWidth: true
-        checkable: true
-        text: qsTr("Square")
+    ButtonGroup {
+        id: buttonGroup
     }
 
-    Button {
-        Layout.fillWidth: true
-        checkable: true
-        text: qsTr("Sawtooth")
-    }
-
-    Button {
-        Layout.fillWidth: true
-        checkable: true
-        text: qsTr("Sine")
-    }
-
-    Button {
-        Layout.fillWidth: true
-        checkable: true
-        text: qsTr("Noise")
+    Repeater {
+        model: waveFormModel
+        Button {
+            checkable: true
+            // Need to cast because waveFormModel.waveForm is an int
+            checked: Number(sound.waveForm) === model.waveForm
+            text: model.text
+            Layout.fillWidth: true
+            ButtonGroup.group: buttonGroup
+            onCheckedChanged: {
+                if (checked) {
+                    sound.waveForm = model.waveForm;
+                }
+            }
+        }
     }
 }

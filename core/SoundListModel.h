@@ -1,7 +1,7 @@
 #ifndef SOUNDLISTMODEL_H
 #define SOUNDLISTMODEL_H
 
-#include "basesoundlistmodel.h"
+#include "BaseSoundListModel.h"
 
 #include <memory>
 
@@ -13,6 +13,7 @@ public:
     enum Role {
         TextRole,
         SoundRole,
+        CategoryRole
     };
 
     SoundListModel(QObject* parent = nullptr);

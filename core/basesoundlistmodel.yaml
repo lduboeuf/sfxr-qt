@@ -1,9 +1,0 @@
-class: BaseSoundListModel
-includes:
-    - QAbstractListModel
-baseClass: QAbstractListModel
-properties:
-    - name: count
-      type: int
-      mutability: readonly
-      impl: pure

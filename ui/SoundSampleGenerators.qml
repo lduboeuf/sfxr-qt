@@ -35,6 +35,9 @@ RowLayout {
         ListElement {
             name: qsTr("Blip/Select")
         }
+        ListElement {
+            name: qsTr("Randomize")
+        }
     }
 
 
@@ -69,6 +72,8 @@ RowLayout {
                     case 6:
                         generator.generateBlipSelect();
                         break
+                    case 7:
+                        generator.randomize(sound.waveForm);
 
                 }
             }
