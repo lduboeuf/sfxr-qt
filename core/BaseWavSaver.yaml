@@ -1,0 +1,9 @@
+class: BaseWavSaver
+properties:
+    - name: bits
+      type: int
+      value: 16
+
+    - name: frequency
+      type: int
+      value: 44100

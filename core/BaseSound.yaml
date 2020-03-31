@@ -1,0 +1,79 @@
+class: BaseSound
+includes:
+    - QUrl
+    - WaveForm.h
+defaults:
+    access: protected
+    type: qreal
+properties:
+    - name: url
+      type: QUrl
+      impl: virtual
+    - name: name
+      type: QString
+      mutability: readonly
+      impl: pure
+    - name: category
+      type: QString
+    - name: hasRealUrl
+      type: bool
+      mutability: readonly
+      impl: pure
+
+    - name: waveForm
+      type: WaveForm::Enum
+      value: WaveForm::Square
+
+    - name: attackTime
+      value: 0
+    - name: sustainTime
+      value: 0.3
+    - name: sustainPunch
+      value: 0
+    - name: decayTime
+      value: 0.4
+
+    - name: baseFrequency
+      value: 0.3
+    - name: minFrequency
+      value: 0
+    - name: slide
+      value: 0
+    - name: deltaSlide
+      value: 0
+    - name: vibratoDepth
+      value: 0
+    - name: vibratoSpeed
+      value: 0
+
+    - name: changeAmount
+      value: 0
+    - name: changeSpeed
+      value: 0
+
+    - name: squareDuty
+      value: 0
+    - name: dutySweep
+      value: 0
+
+    - name: repeatSpeed
+      value: 0
+
+    - name: phaserOffset
+      value: 0
+    - name: phaserSweep
+      value: 0
+
+    - name: lpFilterCutoff
+      value: 1
+    - name: lpFilterCutoffSweep
+      value: 0
+    - name: lpFilterResonance
+      value: 0
+    - name: hpFilterCutoff
+      value: 0
+    - name: hpFilterCutoffSweep
+      value: 0
+
+    - name: volume
+      value: 0.5f
