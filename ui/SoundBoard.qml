@@ -8,6 +8,9 @@ import sfxr 1.0
 Page {
 
     id:homeEffect
+
+    property Sound initialSound
+
     topPadding: 12
 
     header:ToolBar {
@@ -50,7 +53,7 @@ Page {
             Label {
                 id:titleLbl
                 anchors.centerIn: parent
-                text: qsTr("sound: ") + main.sound.name
+                text: main.sound.name
                 color: titleLblMouseArea.pressed ? Qt.darker("white") : "white"
 
                 MouseArea {
@@ -93,7 +96,32 @@ Page {
                     y: menuButton.height
 
                     MenuItem {
-                        text: "Loop"
+                        ToolButton {
+                            id:resetBtn
+                            contentItem: Image {
+                                id:resetImg
+                                fillMode: Image.Pad
+                                sourceSize.width: headerRow.height  * 0.4
+                                sourceSize.height: headerRow.height  * 0.4
+                                anchors.centerIn: resetBtn
+                                source: "/assets/undo.svg"
+                            }
+                            ColorOverlay {
+                                anchors.fill: resetImg
+                                source: resetImg
+                                color: "white"
+                            }
+                            onClicked: {
+                                main.sound.resetWith(initialSound);
+                                menu.close()
+                            }
+                        }
+
+
+                    }
+
+                    MenuItem {
+                        //text: "Loop"
                         ToolButton {
                             id:loopBtn
                             //enabled: false
@@ -125,8 +153,10 @@ Page {
                         }
                     }
 
+
+
                     MenuItem {
-                        text: "Export"
+                        //text: "Export"
                         ExportHandler{
                             id:exportHandler
                             width: menuButton.width
@@ -356,104 +386,10 @@ Page {
             }
         }
 
-        // FrequencyEffect{}
-        // FilterEffect{}
-        // OthersEffect{}
 
     }
 
 
-
-    //    StackView {
-    //        id:pageStack
-    //        anchors {
-    //            top: waveFormRow.bottom
-    //            left: parent.left
-    //            right: parent.right
-    //            bottom: parent.bottom
-    //            margins: 12
-    //        }
-    //        pushEnter: Transition {
-    //            PropertyAnimation {
-    //                property: "opacity"
-    //                from: 0
-    //                to:1
-    //                duration: 200
-    //            }
-    //            PropertyAnimation {
-    //                property: "x"
-    //                from: pageStack.width / 2
-    //                //to:0
-    //                duration: 200
-    //            }
-    //            PropertyAnimation {
-    //                property: "y"
-    //                from: pageStack.height / 2
-    //                //to:0
-    //                duration: 200
-    //            }
-    ////            PropertyAnimation {
-    ////                property: "width"
-    ////                from: 1
-    ////                //to:pageStack.width
-    ////                duration: 200
-    ////            }
-    ////            PropertyAnimation {
-    ////                property: "height"
-    ////                from: 1
-    ////                //to:pageStack.height
-    ////                duration: 200
-    ////            }
-    //            PropertyAnimation {
-    //                property: "scale"
-    //                from: 0
-    //                to:1
-    //                //to:pageStack.height
-    //                duration: 200
-    //            }
-    //        }
-    //        pushExit: Transition {
-    //            PropertyAnimation {
-    //                property: "opacity"
-    //                from: 1
-    //                to:0
-    //                duration: 200
-    //            }
-    //        }
-    //        popExit: Transition {
-    //                PropertyAnimation {
-    //                    property: "width"
-    //                    to:1
-    //                    duration: 200
-    //                }
-    //                PropertyAnimation {
-    //                    property: "height"
-    //                    to:1
-    //                    duration: 200
-    //                }
-    //                PropertyAnimation {
-    //                    property: "x"
-    //                    to:pageStack.width / 2
-    //                    duration: 200
-    //                }
-    //                PropertyAnimation {
-    //                    property: "y"
-    //                    to:pageStack.height / 2
-    //                    duration: 200
-    //                }
-
-    //            }
-    //        popEnter: Transition {
-    //                PropertyAnimation {
-    //                    property: "opacity"
-    //                    from: 0
-    //                    to:1
-    //                    duration: 200
-    //                }
-    //            }
-    //        initialItem:menu
-
-    //    }
 
     footer: TabBar {
         id: tabBar
@@ -474,6 +410,10 @@ Page {
         TabButton {
             text: qsTr("Others")
         }
+    }
+
+    Component.onCompleted: {
+        initialSound = generator.duplicate(main.sound)
     }
 
 

@@ -74,14 +74,17 @@ Page {
     }
 
     Flickable {
+        property int padding: 6
         anchors {
             top:lblTitle.bottom
             bottom: parent.bottom
             left:parent.left
+            leftMargin: padding
+            rightMargin: padding
             right: parent.right
         }
 
-        contentWidth: parent.width
+        contentWidth: parent.width - padding * 2
         contentHeight: soundlist.height
 
 
@@ -97,6 +100,15 @@ Page {
                 onTriggered: {
                     currentSoundItem = this
                     generator.randomize(sound.waveForm);
+                }
+            }
+
+            SoundItem {
+                text: qsTr("Simple Sound")
+                width: parent.width
+                onTriggered: {
+                    currentSoundItem = this
+                    generator.generateEmpty();
                 }
             }
 
@@ -163,8 +175,6 @@ Page {
                     generator.generateBlipSelect();
                 }
             }
-
-
 
         }
     }

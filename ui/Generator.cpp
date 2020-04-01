@@ -22,6 +22,12 @@ void Generator::generateLaser() {
     finish(move(sound), tr("Laser"));
 }
 
+void Generator::generateEmpty() {
+    auto sound = SoundUtils::generateEmpty();
+    sound->setCategory("Empty");
+    finish(move(sound), tr("Empty"));
+}
+
 void Generator::generateExplosion() {
     auto sound = SoundUtils::generateExplosion();
     sound->setCategory("Explosion");

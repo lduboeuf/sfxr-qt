@@ -19,6 +19,7 @@ SwipeDelegate {
 
     property string iconSource : ""
     property alias indexLabelVisible: indexLabel.visible
+    property int count
 
 
     contentItem: RowLayout {
@@ -50,7 +51,7 @@ SwipeDelegate {
 
         Label{
             id:lbl
-            text: model.text
+            text: model.text + "#" + (count - index)
         }
 
 

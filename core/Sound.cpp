@@ -60,6 +60,15 @@ Result Sound::load(const QUrl& url) {
     return SoundIO::load(this, url);
 }
 
+void Sound::resetWith(Sound* other){
+    QMetaObject mo = BaseSound::staticMetaObject;
+    for (int idx = 0; idx < mo.propertyCount(); ++idx) {
+        QMetaProperty property = mo.property(idx);
+        QVariant value = property.read(other);
+        property.write(this, value);
+    }
+}
+
 Result Sound::save(const QUrl& url) {
     auto result = SoundIO::save(this, url);
     if (!result) {

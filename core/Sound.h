@@ -14,6 +14,7 @@ public:
     void fromOther(const Sound* other);
     Q_INVOKABLE Result load(const QUrl& url);
     Q_INVOKABLE Result save(const QUrl& url);
+    Q_INVOKABLE void resetWith(Sound* other);
     QString name() const override;
 
     bool hasRealUrl() const override;

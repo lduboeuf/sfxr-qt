@@ -33,6 +33,12 @@ std::unique_ptr<Sound> generatePickup() {
     return sound;
 }
 
+std::unique_ptr<Sound> generateEmpty() {
+    auto sound = std::make_unique<Sound>();
+    sound->setBaseFrequency(frnd(1.0));
+    return sound;
+}
+
 std::unique_ptr<Sound> generateLaser() {
     auto sound = std::make_unique<Sound>();
     sound->setWaveForm(WaveForm::random({WaveForm::Square, WaveForm::Sawtooth, WaveForm::Sine}));

@@ -119,15 +119,19 @@ Column {
         function calculateListViewHeight(){
             /* calculate ListView dimensions based on content */
             var listViewHeight = 0
-            for (var i = 0; i < listView.contentItem.children.length; i++) {
+            for (var i = 0; i < listView.contentItem.children.length -1; i++) {
                 listViewHeight += listView.contentItem.children[i].height
             }
             return listViewHeight
         }
 
+        add: Transition {
+                NumberAnimation { properties: "opacity"; from: 0; to: 1.0; duration: 600; easing:Easing.OutInQuad }
+        }
         delegate:SwipableItem {
             id:soundDelegate
             highlighted: model.index === listView.currentIndex
+            count: listView.count
 
             onClicked: {
                listView.currentIndex = model.index
