@@ -19,8 +19,8 @@ Page {
             anchors.fill: parent
 
             Rectangle {
-                width: parent.width
-                anchors.bottom: parent.bottom
+                width: headerRow.width
+                anchors.bottom: headerRow.bottom
                 color:"grey"
                 height: 1
             }
@@ -138,7 +138,7 @@ Page {
                                 if (soundPlayer.loop)
                                     soundPlayer.play();
 
-                               // menu.close()
+                                // menu.close()
 
                             }
 
@@ -183,210 +183,212 @@ Page {
         }
     }
 
-    ColumnLayout {
-        id: waveFormRow
-        width: parent.width
-        Layout.fillWidth: true
-
-        Label {
-            text: qsTr("Wave form")
-            font.bold: true
-        }
-        WaveFormSelector {
-            width: waveFormRow.width
-            sound: main.sound
-        }
-
-
-    }
 
 
     SwipeView {
         id: swipeView
-        anchors {
-            top: waveFormRow.bottom
-            left: parent.left
-            right: parent.right
-            bottom: parent.bottom
-            //margins: 12
-        }
+        anchors.fill: parent
         currentIndex: tabBar.currentIndex
         property real knobSize: (swipeView.height - (swipeView.height*0.25)) / 3 //3 knobs max
 
-        Column{
-            anchors.fill: parent.contentItem
+        PageWrapper {
+
+            //anchors.horizontalCenter: parent.horizontalCenter
+            WaveFormSelector {
+                width: swipeView.width * 0.6
+                anchors.horizontalCenter: parent.horizontalCenter
+                sound: main.sound
+            }
+        }
+
+        PageWrapper {
+            Column{
+                width: swipeView.width
+
+                SliderGroup {
+                    id:envelopGroup
+                    width:parent.width
+                    //anchors.fill: parent.contentItem
+                    knobSize: swipeView.knobSize
+
+                    //width: parent.width
+                    text: qsTr("Envelop")
+                    sound: main.sound
+                    model: ListModel {
+                        ListElement {
+                            text: qsTr("Attack time")
+                            soundProperty: "attackTime"
+                        }
+                        ListElement {
+                            text: qsTr("Sustain time")
+                            soundProperty: "sustainTime"
+                        }
+                        ListElement {
+                            text: qsTr("Sustain punch")
+                            soundProperty: "sustainPunch"
+                        }
+                        ListElement {
+                            text: qsTr("Decay time")
+                            soundProperty: "decayTime"
+                        }
+                    }
+                }
+
+
+                SliderGroup {
+                    //Layout.fillWidth: true
+                    width:parent.width
+                    knobSize: swipeView.knobSize
+                    enabled: sound.waveForm === 0
+                    text: qsTr("Square")
+                    sound: main.sound
+                    model: ListModel {
+                        ListElement {
+                            text: qsTr("Square duty")
+                            soundProperty: "squareDuty"
+                        }
+                        ListElement {
+                            text: qsTr("Duty sweep")
+                            soundProperty: "dutySweep"
+                            bipolar: true
+                        }
+                    }
+                }
+
+            }
+
+        }
+
+        PageWrapper {
+            SliderGroup {
+                //anchors.fill: parent.contentItem
+                width: swipeView.width
+                knobSize: swipeView.knobSize
+                text: qsTr("Frequency")
+                sound: main.sound
+                model: ListModel {
+                    ListElement {
+                        text: qsTr("Start frequency")
+                        soundProperty: "baseFrequency"
+                    }
+                    ListElement {
+                        text: qsTr("Min frequency")
+                        soundProperty: "minFrequency"
+                    }
+                    ListElement {
+                        text: qsTr("Slide")
+                        soundProperty: "slide"
+                        bipolar: true
+                    }
+                    ListElement {
+                        text: qsTr("Delta slide")
+                        soundProperty: "deltaSlide"
+                        bipolar: true
+                    }
+                    ListElement {
+                        text: qsTr("Vibrato depth")
+                        soundProperty: "vibratoDepth"
+                    }
+                    ListElement {
+                        text: qsTr("Vibrato speed")
+                        soundProperty: "vibratoSpeed"
+                    }
+                }
+            }
+        }
+        PageWrapper {
 
             SliderGroup {
-                id:envelopGroup
-                width:parent.width
                 //anchors.fill: parent.contentItem
                 knobSize: swipeView.knobSize
-
-                //width: parent.width
-                text: qsTr("Envelop")
+                width: swipeView.width
+                text: qsTr("Filters")
                 sound: main.sound
                 model: ListModel {
                     ListElement {
-                        text: qsTr("Attack time")
-                        soundProperty: "attackTime"
+                        text: qsTr("LP filter cutoff")
+                        soundProperty: "lpFilterCutoff"
                     }
                     ListElement {
-                        text: qsTr("Sustain time")
-                        soundProperty: "sustainTime"
+                        text: qsTr("LP filter cutoff sweep")
+                        soundProperty: "lpFilterCutoffSweep"
+                        bipolar: true
                     }
                     ListElement {
-                        text: qsTr("Sustain punch")
-                        soundProperty: "sustainPunch"
+                        text: qsTr("LP filter resonance")
+                        soundProperty: "lpFilterResonance"
                     }
                     ListElement {
-                        text: qsTr("Decay time")
-                        soundProperty: "decayTime"
-                    }
-                }
-            }
-
-            SliderGroup {
-                //Layout.fillWidth: true
-                width:parent.width
-                knobSize: swipeView.knobSize
-                enabled: sound.waveType === 0
-                text: qsTr("Square")
-                sound: main.sound
-                model: ListModel {
-                    ListElement {
-                        text: qsTr("Square duty")
-                        soundProperty: "squareDuty"
+                        text: qsTr("HP filter cutoff")
+                        soundProperty: "hpFilterCutoff"
                     }
                     ListElement {
-                        text: qsTr("Duty sweep")
-                        soundProperty: "dutySweep"
+                        text: qsTr("HP filter cutoff sweep")
+                        soundProperty: "hpFilterCutoffSweep"
                         bipolar: true
                     }
                 }
             }
 
         }
+        PageWrapper {
+            Column{
+                width: swipeView.width
+                Layout.fillHeight: true
 
-        SliderGroup {
-            anchors.fill: parent.contentItem
-            knobSize: swipeView.knobSize
-            text: qsTr("Frequency")
-            sound: main.sound
-            model: ListModel {
-                ListElement {
-                    text: qsTr("Start frequency")
-                    soundProperty: "baseFrequency"
+                SliderGroup {
+                    width: parent.width
+                    knobSize: swipeView.knobSize
+                    text: qsTr("Phaser")
+                    sound: main.sound
+                    model: ListModel {
+                        ListElement {
+                            text: qsTr("Phaser offset")
+                            soundProperty: "phaserOffset"
+                            bipolar: true
+                        }
+                        ListElement {
+                            text: qsTr("Phaser sweep")
+                            soundProperty: "phaserSweep"
+                            bipolar: true
+                        }
+                    }
                 }
-                ListElement {
-                    text: qsTr("Min frequency")
-                    soundProperty: "minFrequency"
+
+
+                SliderGroup {
+                    width: parent.width
+                    knobSize: swipeView.knobSize
+                    text: qsTr("Change")
+                    sound: main.sound
+                    model: ListModel {
+                        ListElement {
+                            text: qsTr("Change amount")
+                            soundProperty: "changeAmount"
+                            bipolar: true
+                        }
+                        ListElement {
+                            text: qsTr("Change speed")
+                            soundProperty: "changeSpeed"
+                        }
+                    }
                 }
-                ListElement {
-                    text: qsTr("Slide")
-                    soundProperty: "slide"
-                    bipolar: true
-                }
-                ListElement {
-                    text: qsTr("Delta slide")
-                    soundProperty: "deltaSlide"
-                    bipolar: true
-                }
-                ListElement {
-                    text: qsTr("Vibrato depth")
-                    soundProperty: "vibratoDepth"
-                }
-                ListElement {
-                    text: qsTr("Vibrato speed")
-                    soundProperty: "vibratoSpeed"
+                SliderGroup {
+                    width: parent.width
+                    knobSize: swipeView.knobSize
+                    text: qsTr("Repeat")
+                    sound: main.sound
+                    model: ListModel {
+                        ListElement {
+                            text: qsTr("Repeat speed")
+                            soundProperty: "repeatSpeed"
+                        }
+                    }
                 }
             }
+
+
         }
-        SliderGroup {
-            anchors.fill: parent.contentItem
-            knobSize: swipeView.knobSize
-            text: qsTr("Filters")
-            sound: main.sound
-            model: ListModel {
-                ListElement {
-                    text: qsTr("LP filter cutoff")
-                    soundProperty: "lpFilterCutoff"
-                }
-                ListElement {
-                    text: qsTr("LP filter cutoff sweep")
-                    soundProperty: "lpFilterCutoffSweep"
-                    bipolar: true
-                }
-                ListElement {
-                    text: qsTr("LP filter resonance")
-                    soundProperty: "lpFilterResonance"
-                }
-                ListElement {
-                    text: qsTr("HP filter cutoff")
-                    soundProperty: "hpFilterCutoff"
-                }
-                ListElement {
-                    text: qsTr("HP filter cutoff sweep")
-                    soundProperty: "hpFilterCutoffSweep"
-                    bipolar: true
-                }
-            }
-        }
-
-        Column{
-            anchors.fill: parent.contentItem
-
-            SliderGroup {
-                width: parent.width
-                knobSize: swipeView.knobSize
-                text: qsTr("Phaser")
-                sound: main.sound
-                model: ListModel {
-                    ListElement {
-                        text: qsTr("Phaser offset")
-                        soundProperty: "phaserOffset"
-                        bipolar: true
-                    }
-                    ListElement {
-                        text: qsTr("Phaser sweep")
-                        soundProperty: "phaserSweep"
-                        bipolar: true
-                    }
-                }
-            }
-
-
-            SliderGroup {
-                width: parent.width
-                knobSize: swipeView.knobSize
-                text: qsTr("Change")
-                sound: main.sound
-                model: ListModel {
-                    ListElement {
-                        text: qsTr("Change amount")
-                        soundProperty: "changeAmount"
-                        bipolar: true
-                    }
-                    ListElement {
-                        text: qsTr("Change speed")
-                        soundProperty: "changeSpeed"
-                    }
-                }
-            }
-            SliderGroup {
-                width: parent.width
-                knobSize: swipeView.knobSize
-                text: qsTr("Repeat")
-                sound: main.sound
-                model: ListModel {
-                    ListElement {
-                        text: qsTr("Repeat speed")
-                        soundProperty: "repeatSpeed"
-                    }
-                }
-            }
-        }
-
-
     }
 
 
@@ -398,6 +400,9 @@ Page {
             color:"#333333"
         }
 
+        TabButton {
+            text: qsTr("Wave Form")
+        }
         TabButton {
             text: qsTr("Envelop")
         }

@@ -4,9 +4,10 @@ import QtQuick.Controls 2.0
 
 import sfxr 1.0
 
-RowLayout {
+ColumnLayout {
     id: root
     property Sound sound
+    spacing: 6
 
     ListModel {
         id: waveFormModel
@@ -31,6 +32,11 @@ RowLayout {
             waveForm: WaveForm.Noise
             text: qsTr("Noise")
         }
+    }
+
+    Label {
+        text: qsTr("Wave form")
+        font.bold: true
     }
 
     ButtonGroup {

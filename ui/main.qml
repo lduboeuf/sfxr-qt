@@ -91,7 +91,7 @@ ApplicationWindow {
             RowLayout {
                 id: waveFormRow
                 spacing: 12
-                Layout.alignment: Qt.AlignHCenter
+                Layout.alignment: Qt.AlignCenter
                 Label {
                     text: qsTr("Wave form")
                 }

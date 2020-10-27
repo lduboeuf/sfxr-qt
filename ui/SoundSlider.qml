@@ -3,7 +3,7 @@ import QtQuick.Controls 2.2
 
 import sfxr 1.0
 
-Dial {
+Slider {
     id: root
     property Sound sound
     property string soundProperty

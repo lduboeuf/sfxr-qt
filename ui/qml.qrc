@@ -42,5 +42,6 @@
         <file>Home.qml</file>
         <file>assets/add-to-playlist.svg</file>
         <file>assets/undo.svg</file>
+        <file>PageWrapper.qml</file>
     </qresource>
 </RCC>

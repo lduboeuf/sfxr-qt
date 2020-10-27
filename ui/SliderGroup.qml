@@ -11,79 +11,66 @@ ColumnLayout {
     property ListModel model
 
     property real knobSize: 100
+            Label {
+                id:lbl
+                //Layout.fillWidth: true
+                //anchors.left: parent.left
+                //Layout.alignment: Qt.AlignLeft
+                text: root.text
+                font.bold: true
+
+            }
+
+//    RowLayout {
+//        id:title
+//        width: parent.width
+//        //anchors.horizontalCenter: parent.horizontalCenter
+
+//        Label {
+//            id:lbl
+//            //Layout.fillWidth: true
+//            anchors.left: parent.left
+//            //Layout.alignment: Qt.AlignLeft
+//            text: root.text
+//            font.bold: true
+
+//        }
+//        Rectangle {
+//            height: 1
+//            color: "grey"
+//            width: root.width
+//            anchors.topMargin: 4
+//            anchors.top: lbl.bottom
+//        }
 
 
-    RowLayout {
-        id:title
-        width: parent.width
-
-        Label {
-            id:lbl
-            Layout.fillWidth: true
-            anchors.left: parent.left
-            //Layout.alignment: Qt.AlignLeft
-            text: root.text
-            font.bold: true
-
-        }
-        Rectangle {
-            height: 1
-            color: "grey"
-            width: parent.width
-            anchors.topMargin: 4
-            anchors.top: lbl.bottom
-        }
+//    }
 
 
+    Repeater {
+        model: root.model
+        //Row {
+        // width: parent.width
 
+        Column {
+            anchors.horizontalCenter: parent.horizontalCenter
 
+            SoundSlider {
+                id: slider
+                sound: root.sound
+                width:root.width * 0.6
+                soundProperty: model.soundProperty
+                bipolar: model.bipolar === true
 
+            }
 
-    }
-
-
-    GridLayout {
-        id:container
-        columns: 2
-        rowSpacing: 12
-        columnSpacing: 24
-
-        anchors.horizontalCenter: parent.horizontalCenter
-
-
-
-        Repeater {
-            model: root.model
-            //Row {
-            // width: parent.width
-
-            Column {
-
-
-
-                SoundSlider {
-                    id: slider
-                    sound: root.sound
-                    soundProperty: model.soundProperty
-                    bipolar: model.bipolar === true
-                    //implicitWidth: root.knobSize
-                    //implicitHeight: root.knobSize
-                    width: root.knobSize
-                    height: root.knobSize
-                    //width: parent.width * 2 / 3
-
-
-                }
-
-                Label {
-                    text: model.text
-                    anchors.horizontalCenter: slider.horizontalCenter
-                    anchors.topMargin: 12
-                }
-
+            Label {
+                text: model.text
+                anchors.horizontalCenter: slider.horizontalCenter
             }
 
         }
 
     }
+
 }
