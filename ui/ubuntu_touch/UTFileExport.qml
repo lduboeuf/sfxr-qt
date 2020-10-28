@@ -1,5 +1,7 @@
 import QtQuick 2.0
 import QtQuick.Controls 2.2
+import QtGraphicalEffects 1.0
+
 
 Item {
 
@@ -13,11 +15,18 @@ Item {
         anchors.fill: parent
         //anchors.right:  parent.right
         contentItem: Image {
+            id:shareImg
             fillMode: Image.Pad
             sourceSize.width: root.height  * 0.4
             sourceSize.height: root.height  * 0.4
             anchors.centerIn: parent
             source: "/assets/share.svg"
+        }
+
+        ColorOverlay {
+            anchors.fill: shareImg
+            source: shareImg
+            color: "white"
         }
         onClicked:{
 
