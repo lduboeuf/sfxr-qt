@@ -278,7 +278,7 @@ Page {
     Item {
         id: menu
         width: headerRow.height
-        y: homeEffect.height / 3
+        y: headerRow.height * 2
         anchors.right: parent.right
         property double itemDimension: headerRow.height
 
@@ -310,6 +310,35 @@ Page {
             }
 
             RoundButton {
+                id:loopBtn
+                //enabled: false
+                contentItem: Image {
+                    id:loopImg
+                    fillMode: Image.Pad
+                    sourceSize.width: menu.itemDimension  * 0.4
+                    sourceSize.height: menu.itemDimension * 0.4
+                    source: "/assets/loop.svg"
+                }
+                background: Rectangle {
+                    radius: loopBtn.radius
+                    color: Qt.darker("#cccccc")
+                }
+                onClicked: {
+                    soundPlayer.loop = !soundPlayer.loop;
+                    if (soundPlayer.loop)
+                        soundPlayer.play();
+                }
+
+                ColorOverlay {
+                    anchors.fill: loopImg
+                    opacity: (soundPlayer.loop) ? 1 : 0.4
+                    source: loopImg
+                    color: "white"
+                }
+
+            }
+
+            RoundButton {
                 id:resetBtn
                 contentItem: Image {
                     id:resetImg
@@ -330,37 +359,6 @@ Page {
                 onClicked: {
                     main.sound.resetWith(initialSound);
                 }
-            }
-
-            RoundButton {
-                id:loopBtn
-                //enabled: false
-                contentItem: Image {
-                    id:loopImg
-                    fillMode: Image.Pad
-                    sourceSize.width: menu.itemDimension  * 0.4
-                    sourceSize.height: menu.itemDimension * 0.4
-                    source: "/assets/loop.svg"
-                }
-                background: Rectangle {
-                    radius: loopBtn.radius
-                    color: Qt.darker("#cccccc")
-                }
-                onClicked: {
-                    soundPlayer.loop = !soundPlayer.loop;
-                    if (soundPlayer.loop)
-                        soundPlayer.play();
-
-
-                }
-
-                ColorOverlay {
-                    anchors.fill: loopImg
-                    opacity: (soundPlayer.loop) ? 1 : 0.4
-                    source: loopImg
-                    color: "white"
-                }
-
             }
 
 
