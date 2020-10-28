@@ -54,136 +54,18 @@ Page {
                 id:titleLbl
                 anchors.centerIn: parent
                 text: main.sound.name
-                color: titleLblMouseArea.pressed ? Qt.darker("white") : "white"
-
-                MouseArea {
-                    id:titleLblMouseArea
-                    anchors.fill: parent
-                    onClicked:soundPlayer.play();
-                }
-
-                Image {
-                    id:playImg
-                    fillMode: Image.Pad
-                    opacity: 0
-                    sourceSize.width: headerRow.height  * 0.4
-                    sourceSize.height: headerRow.height  * 0.4
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    source: "/assets/play.svg"
-                }
-
-                ColorOverlay {
-                    anchors.fill: playImg
-                    source: playImg
-                    opacity: titleLblMouseArea.pressed ? 1: 0
-                    color: "white"
-                }
+                color: "white"
             }
 
-            ToolButton {
-                id: menuButton
-                //anchors.right:  parent.right
+            ExportHandler{
                 anchors.right: parent.right
-                width:headerRow.height
-                //height: width
-                text: "⋮"
-                onClicked: menu.open()
-
-                Menu {
-                    id: menu
-                    width: menuButton.width
-                    y: menuButton.height
-
-                    MenuItem {
-                        ToolButton {
-                            id:resetBtn
-                            contentItem: Image {
-                                id:resetImg
-                                fillMode: Image.Pad
-                                sourceSize.width: headerRow.height  * 0.4
-                                sourceSize.height: headerRow.height  * 0.4
-                                anchors.centerIn: resetBtn
-                                source: "/assets/undo.svg"
-                            }
-                            ColorOverlay {
-                                anchors.fill: resetImg
-                                source: resetImg
-                                color: "white"
-                            }
-                            onClicked: {
-                                main.sound.resetWith(initialSound);
-                                menu.close()
-                            }
-                        }
-
-
-                    }
-
-                    MenuItem {
-                        //text: "Loop"
-                        ToolButton {
-                            id:loopBtn
-                            //enabled: false
-                            contentItem: Image {
-                                id:loopImg
-                                fillMode: Image.Pad
-                                sourceSize.width: headerRow.height  * 0.4
-                                sourceSize.height: headerRow.height  * 0.4
-                                anchors.centerIn: loopBtn
-                                source: "/assets/loop.svg"
-                            }
-                            onClicked: {
-                                soundPlayer.loop = !soundPlayer.loop;
-                                if (soundPlayer.loop)
-                                    soundPlayer.play();
-
-                                // menu.close()
-
-                            }
-
-
-                            ColorOverlay {
-                                anchors.fill: loopImg
-                                opacity: (soundPlayer.loop) ? 1 : 0.4
-                                source: loopImg
-                                color: "white"
-                            }
-
-                        }
-                    }
-
-
-
-                    MenuItem {
-                        //text: "Export"
-                        ExportHandler{
-                            id:exportHandler
-                            width: menuButton.width
-                            height: menuButton.height
-                        }
-
-                        ColorOverlay {
-                            anchors.fill: exportHandler
-                            source: exportHandler
-                            color: "white"
-                        }
-
-                    }
-
-                    enter: Transition {
-                        NumberAnimation { property: "opacity"; from: 0.0; to: 1.0 }
-                    }
-
-                }
-
-
+                width: parent.height
+                height: parent.height
             }
+
 
         }
     }
-
-
 
     SwipeView {
         id: swipeView
@@ -192,11 +74,12 @@ Page {
         property real knobSize: (swipeView.height - (swipeView.height*0.25)) / 3 //3 knobs max
 
         PageWrapper {
-
-            //anchors.horizontalCenter: parent.horizontalCenter
+            //width: parent.width
+            implicitHeight: parent.height
+            implicitWidth: parent.width
             WaveFormSelector {
-                width: swipeView.width * 0.6
                 anchors.horizontalCenter: parent.horizontalCenter
+                width: parent.width * 0.6
                 sound: main.sound
             }
         }
@@ -390,6 +273,102 @@ Page {
 
         }
     }
+
+
+    Item {
+        id: menu
+        width: headerRow.height
+        y: homeEffect.height / 3
+        anchors.right: parent.right
+        property double itemDimension: headerRow.height
+
+
+        Column {
+            spacing: 12
+            RoundButton {
+                id:playBtn
+                contentItem:Image {
+                    id:playImg
+                    fillMode: Image.Pad
+                    opacity: 0
+                    sourceSize.width: menu.itemDimension  * 0.4
+                    sourceSize.height: menu.itemDimension  * 0.4
+                    source: "/assets/play.svg"
+                }
+                background: Rectangle {
+                    radius: playBtn.radius
+                    color: Qt.darker("#cccccc")
+                }
+                ColorOverlay {
+                    anchors.fill: playImg
+                    source: playImg
+                    opacity: playBtn.pressed ? 0.5: 1
+                    color: "white"
+                }
+                onClicked: soundPlayer.play();
+
+            }
+
+            RoundButton {
+                id:resetBtn
+                contentItem: Image {
+                    id:resetImg
+                    fillMode: Image.Pad
+                    sourceSize.width: menu.itemDimension  * 0.4
+                    sourceSize.height: menu.itemDimension  * 0.4
+                    source: "/assets/undo.svg"
+                }
+                background: Rectangle {
+                    radius: resetBtn.radius
+                    color: Qt.darker("#cccccc")
+                }
+                ColorOverlay {
+                    anchors.fill: resetImg
+                    source: resetImg
+                    color: "white"
+                }
+                onClicked: {
+                    main.sound.resetWith(initialSound);
+                }
+            }
+
+            RoundButton {
+                id:loopBtn
+                //enabled: false
+                contentItem: Image {
+                    id:loopImg
+                    fillMode: Image.Pad
+                    sourceSize.width: menu.itemDimension  * 0.4
+                    sourceSize.height: menu.itemDimension * 0.4
+                    source: "/assets/loop.svg"
+                }
+                background: Rectangle {
+                    radius: loopBtn.radius
+                    color: Qt.darker("#cccccc")
+                }
+                onClicked: {
+                    soundPlayer.loop = !soundPlayer.loop;
+                    if (soundPlayer.loop)
+                        soundPlayer.play();
+
+
+                }
+
+                ColorOverlay {
+                    anchors.fill: loopImg
+                    opacity: (soundPlayer.loop) ? 1 : 0.4
+                    source: loopImg
+                    color: "white"
+                }
+
+            }
+
+
+        }
+
+    }
+
+
 
 
 

@@ -11,46 +11,16 @@ ColumnLayout {
     property ListModel model
 
     property real knobSize: 100
-            Label {
-                id:lbl
-                //Layout.fillWidth: true
-                //anchors.left: parent.left
-                //Layout.alignment: Qt.AlignLeft
-                text: root.text
-                font.bold: true
+    spacing: 12
+    Label {
+        id:lbl
+        text: root.text
+        font.bold: true
 
-            }
-
-//    RowLayout {
-//        id:title
-//        width: parent.width
-//        //anchors.horizontalCenter: parent.horizontalCenter
-
-//        Label {
-//            id:lbl
-//            //Layout.fillWidth: true
-//            anchors.left: parent.left
-//            //Layout.alignment: Qt.AlignLeft
-//            text: root.text
-//            font.bold: true
-
-//        }
-//        Rectangle {
-//            height: 1
-//            color: "grey"
-//            width: root.width
-//            anchors.topMargin: 4
-//            anchors.top: lbl.bottom
-//        }
-
-
-//    }
-
+    }
 
     Repeater {
         model: root.model
-        //Row {
-        // width: parent.width
 
         Column {
             anchors.horizontalCenter: parent.horizontalCenter

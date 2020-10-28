@@ -1,6 +1,7 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.2
 import QtQuick.Dialogs 1.2
+import QtGraphicalEffects 1.0
 //export
 
 Item {
@@ -35,6 +36,7 @@ Item {
 
             anchors.right:  parent.right
             contentItem: Image {
+                id:shareImg
                 fillMode: Image.Pad
                 sourceSize.width: root.height  * 0.4
                 sourceSize.height: root.height  * 0.4
@@ -45,6 +47,12 @@ Item {
             onClicked:{
                 exportWavFileDialog.open();
 
+            }
+
+            ColorOverlay {
+                anchors.fill: shareImg
+                source: shareImg
+                color: "white"
             }
 
          }
