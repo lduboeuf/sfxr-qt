@@ -13,15 +13,15 @@ ApplicationWindow {
 
     property real margin: 12
     property SoundItem currentSoundItem: null
-
-
     property Sound sound:Sound{}
-    //property Sound sound: soundListModel.soundForRow(soundListModel.rowCount()-1)
-
-
+    property alias exportWrapper: exportManager
 
     WavSaver {
         id: wavSaver
+    }
+
+    ExportWrapper {
+        id: exportManager
     }
 
     SoundPlayer {
@@ -37,7 +37,6 @@ ApplicationWindow {
             play();
         }
     }
-
 
     Generator {
         id: generator
@@ -55,13 +54,7 @@ ApplicationWindow {
     StackView{
         id:mainStack
         anchors.fill: parent
-
         initialItem: home
     }
-
-
-
-
-
 
 }

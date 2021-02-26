@@ -11,61 +11,64 @@ Page {
 
     property Sound initialSound
 
-    topPadding: 12
+    //topPadding: 12
 
-    header:ToolBar {
-        RowLayout{
-            id:headerRow
-            anchors.fill: parent
+    header: ToolBar {
+            RowLayout {
+                anchors.fill: parent
 
-            Rectangle {
-                width: headerRow.width
-                anchors.bottom: headerRow.bottom
-                color:"grey"
-                height: 1
-            }
+                ToolButton {
+                    id: toolButtonLeft
+                    contentItem: Image {
+                        id:navImage
+                        fillMode: Image.Pad
+                        sourceSize.width: header.height  * 0.4
+                        sourceSize.height: header.height  * 0.4
+                        source: "/assets/back.svg"
+                    }
+                    onClicked:{
+                        soundPlayer.loop = checked;
+                        mainStack.pop()
+                    }
 
-            ToolButton {
-                id: toolButtonLeft
-                anchors.left: parent.left
-                contentItem: Image {
-                    id:navImage
-                    fillMode: Image.Pad
-                    sourceSize.width: headerRow.height  * 0.4
-                    sourceSize.height: headerRow.height  * 0.4
-                    anchors.verticalCenter: parent.verticalCenter
-                    anchors.horizontalCenter: parent.horizontalCenter
-                    source: "/assets/back.svg"
+                    ColorOverlay {
+                        anchors.fill: navImage
+                        source: navImage
+                        color: "white"
+                    }
+
                 }
-                onClicked:{
-                    soundPlayer.loop = checked;
-                    mainStack.pop()
-                }
-
-                ColorOverlay {
-                    anchors.fill: navImage
-                    source: navImage
-                    color: "white"
+                Label {
+                    text: main.sound.name
+                    elide: Label.ElideRight
+                    horizontalAlignment: Qt.AlignHCenter
+                    verticalAlignment: Qt.AlignVCenter
+                    Layout.fillWidth: true
                 }
 
+                ToolButton {
+                    id: exportBtn
+                    contentItem: Image {
+                        id:shareImg
+                        fillMode: Image.Pad
+                        sourceSize.width: header.height  * 0.4
+                        sourceSize.height: header.height  * 0.4
+                        source: "/assets/share.svg"
+                    }
+
+                    onClicked:{
+                        main.exportWrapper.save()
+                    }
+
+                    ColorOverlay {
+                        anchors.fill: shareImg
+                        source: shareImg
+                        color: "white"
+                    }
+                 }
+
             }
-
-            Label {
-                id:titleLbl
-                anchors.centerIn: parent
-                text: main.sound.name
-                color: "white"
-            }
-
-            ExportHandler{
-                anchors.right: parent.right
-                width: parent.height
-                height: parent.height
-            }
-
-
         }
-    }
 
     SwipeView {
         id: swipeView
@@ -144,7 +147,6 @@ Page {
 
         PageWrapper {
             SliderGroup {
-                //anchors.fill: parent.contentItem
                 width: swipeView.width
                 knobSize: swipeView.knobSize
                 text: qsTr("Frequency")
@@ -182,7 +184,6 @@ Page {
         PageWrapper {
 
             SliderGroup {
-                //anchors.fill: parent.contentItem
                 knobSize: swipeView.knobSize
                 width: swipeView.width
                 text: qsTr("Filters")
@@ -277,10 +278,10 @@ Page {
 
     Item {
         id: menu
-        width: headerRow.height
-        y: headerRow.height * 2
+        width: header.height
+        y: header.height * 2
         anchors.right: parent.right
-        property double itemDimension: headerRow.height
+        property double itemDimension: header.height
 
 
         Column {

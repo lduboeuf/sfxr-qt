@@ -8,7 +8,7 @@ Dialog {
 
     x: (parent.width - width) / 2
     y: (parent.height - height) / 4
-    parent: ApplicationWindow.overlay
+    parent: QuickUtils.rootItem(this)
 
     focus: true
     modal: true
@@ -30,6 +30,9 @@ Dialog {
             maximumLength: 18
             placeholderText: qsTr("sound name")
             Layout.fillWidth: true
+            background: Rectangle {
+                color: "white"
+            }
         }
     }
 

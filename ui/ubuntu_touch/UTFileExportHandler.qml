@@ -69,11 +69,7 @@ Popups.PopupBase {
     }
 
     Component {
-            id: resultComponent
-            ContentItem {}
-        }
-
-
-
-
+        id: resultComponent
+        ContentItem {}
+    }
 }

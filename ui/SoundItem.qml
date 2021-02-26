@@ -20,8 +20,6 @@ Column {
         listView.currentIndex = 0
     }
 
-
-
     SoundListModel {
         id: soundListModel
     }
@@ -34,51 +32,54 @@ Column {
         implicitWidth: soundItemLayout.implicitWidth
         implicitHeight: soundItemLayout.implicitHeight
 
+        MouseArea {
+            id:mouseArea
+            anchors.fill: parent
+            onClicked: {
+                root.triggered()
+                listView.currentIndex = 0
+            }
+        }
+
         RowLayout {
             id:soundItemLayout
             anchors.fill: parent
-            spacing: 16
+            spacing: 16          
 
             Rectangle {
                 id:fakeMargin
                 width: 12
             }
 
-            Image {
-                id:soundItemImg
-                source: "/assets/add-to-playlist.svg"
-                sourceSize.height: soundItem.implicitHeight * 1.2
-                sourceSize.width: soundItem.implicitHeight * 1.2
-            }
-
-            ColorOverlay {
-                anchors.fill: soundItemImg
-                source: soundItemImg
-                color: mouseArea.pressed ? "white": Qt.darker("white")
-            }
-
             Label {
                 id:soundItem
-                verticalAlignment: Qt.AlignVCenter
+                Layout.alignment: Qt.AlignVCenter
                 Layout.fillWidth: true
                 height: implicitHeight + 16
             }
 
+            Image {
+                id:soundItemImg
+                source: "/assets/add-to-playlist.svg"
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                sourceSize.height: soundItem.implicitHeight * 1.2
+                sourceSize.width: soundItem.implicitHeight * 1.2
 
-            MouseArea {
-                id:mouseArea
-                anchors.fill: parent
-                onClicked: {
-                    root.triggered()
-                    listView.currentIndex = 0
-                }
             }
 
+            ColorOverlay {
+
+                //anchors.fill: soundItemImg
+                //Layout.fillWidth: true
+                //Layout.fillHeight: true
+                source: soundItemImg
+                color: mouseArea.pressed ? "white": Qt.darker("white")
+            }
 
             ToolButton {
                 id: expandCollapseBtn
-                anchors.right: parent.right
-                anchors.verticalCenter: parent.verticalCenter
+                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 enabled: listView.count > 0
                 contentItem: Image {
                     id:expandImg
@@ -88,25 +89,17 @@ Column {
                     source: {
                         if (soundListModel.count == 0) return "";
                         return root.expanded ? "/assets/go-next.svg" : "/assets/go-down.svg"
-
                     }
                 }
                 onClicked: root.expanded = !root.expanded
 
                 ColorOverlay {
-                    anchors.fill: expandImg
                     source: expandImg
                     color: "white"
                 }
-
             }
         }
-
     }
-
-
-
-
 
     ListView {
         id: listView
@@ -126,7 +119,7 @@ Column {
         }
 
         add: Transition {
-                NumberAnimation { properties: "opacity"; from: 0; to: 1.0; duration: 600; easing:Easing.OutInQuad }
+                NumberAnimation { properties: "opacity"; from: 0; to: 1.0; duration: 600; easing: Easing.OutInQuad }
         }
         delegate:SwipableItem {
             id:soundDelegate
@@ -137,6 +130,13 @@ Column {
                listView.currentIndex = model.index
                main.sound = model.sound
                soundPlayer.play();
+            }
+
+            onSaveClicked: {
+                listView.currentIndex = model.index
+                main.sound = model.sound
+                main.exportWrapper.save()
+                swipe.close()
             }
 
             onEditClicked: {

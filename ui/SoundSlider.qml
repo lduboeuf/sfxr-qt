@@ -30,15 +30,6 @@ Slider {
         }
     }
 
-//    Rectangle {
-//        width: 1
-//        height: parent.height
-//        z: -2
-//        visible: bipolar
-//        x: parent.width / 2
-//        color: "#ccc"
-//    }
-
     function soundValueForSliderValue(v) {
         return bipolar ? (v - 1) : v;
     }

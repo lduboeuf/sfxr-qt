@@ -9,47 +9,45 @@ Page {
     signal backPressed()
     property real textSize :10
 
-    clip: true
+    header: ToolBar {
+        RowLayout {
+            anchors.fill: parent
 
-    header: RowLayout {
-        id:headerRow
-        width:parent.width
-        height: title.implicitHeight * 2
+            ToolButton {
+                id: backBtn
+                contentItem: Image {
+                    id:backImg
+                    fillMode: Image.Pad
+                    sourceSize.width: header.height  * 0.4
+                    sourceSize.height: header.height  * 0.4
+                    source: "/assets/back.svg"
+                }
+                onClicked:{
+                    mainStack.pop()
+                }
 
-        ToolButton {
-            id: backBtn
-            anchors.left:  parent.left
-            anchors.verticalCenter: headerRow.verticalCenter
-            contentItem: Image {
-                id:backImg
-                fillMode: Image.Pad
-                sourceSize.width: headerRow.height  * 0.4
-                sourceSize.height: headerRow.height  * 0.4
-                source: "/assets/back.svg"
-            }
-            onClicked:{
+                ColorOverlay {
+                    anchors.fill: backImg
+                    source: backImg
+                    color: "white"
+                }
 
-                mainStack.pop()
-
-            }
-
-            ColorOverlay {
-                anchors.fill: backImg
-                source: backImg
-                color: "white"
             }
 
-        }
+            Label {
+                id:title
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
+                text: qsTr("About")
+                font.bold: true
+            }
 
-        Label {
-            id:title
-            anchors.horizontalCenter: parent.horizontalCenter
-            anchors.verticalCenter: parent.verticalCenter
-            text: qsTr("About")
-            font.bold: true
+            ToolButton {
+                //fake item for position ok
+            }
         }
     }
-
 
 
     Flickable {

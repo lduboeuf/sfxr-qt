@@ -4,7 +4,7 @@ import QtQuick.Controls 2.0
 
 import sfxr 1.0
 
-ColumnLayout {
+Column {
     id: root
     property string text
     property Sound sound
@@ -16,7 +16,6 @@ ColumnLayout {
         id:lbl
         text: root.text
         font.bold: true
-
     }
 
     Repeater {
@@ -31,16 +30,12 @@ ColumnLayout {
                 width:root.width * 0.6
                 soundProperty: model.soundProperty
                 bipolar: model.bipolar === true
-
             }
 
             Label {
                 text: model.text
                 anchors.horizontalCenter: slider.horizontalCenter
             }
-
         }
-
     }
-
 }

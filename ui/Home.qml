@@ -18,41 +18,34 @@ Page {
         }
     }
 
-    header:ToolBar{
-        RowLayout {
-            id:headerRow
-            anchors.fill: parent
 
-            Rectangle {
-                width: parent.width
-                anchors.bottom: parent.bottom
-                color:"grey"
-                height: 1
+    header: ToolBar {
+        RowLayout {
+            anchors.fill: parent
+            ToolButton {
+                //fake item for position ok
             }
 
             Label {
-                id:title
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.verticalCenter: parent.verticalCenter
                 text: qsTr("Sfxr")
                 font.bold: true
+                horizontalAlignment: Qt.AlignHCenter
+                verticalAlignment: Qt.AlignVCenter
+                Layout.fillWidth: true
             }
 
             ToolButton {
                 id: infoBtn
-                anchors.right:  parent.right
-                anchors.verticalCenter: headerRow.verticalCenter
+                //Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 contentItem: Image {
                     id:helpImg
                     fillMode: Image.Pad
-                    sourceSize.width: headerRow.height  * 0.4
-                    sourceSize.height: headerRow.height  * 0.4
+                    sourceSize.width: header.height  * 0.4
+                    sourceSize.height: header.height  * 0.4
                     source: "/assets/info.svg"
                 }
                 onClicked:{
-
                     mainStack.push("qrc:/About.qml")
-
                 }
 
                 ColorOverlay {
@@ -60,11 +53,13 @@ Page {
                     source: helpImg
                     color: "white"
                 }
-
             }
+        }
+    }
 
-        }}
-
+    ExportWrapper {
+        id: exportWrapper
+    }
 
 
     Label {
@@ -75,11 +70,12 @@ Page {
 
     Flickable {
         property int padding: 6
+        flickableDirection: Flickable.VerticalFlick
         anchors {
             top:lblTitle.bottom
             bottom: parent.bottom
             left:parent.left
-            leftMargin: padding
+            //leftMargin: padding
             rightMargin: padding
             right: parent.right
         }
@@ -91,7 +87,7 @@ Page {
         Column {
             id: soundlist
             width: parent.width
-            spacing: 6
+            spacing: 2
 
             SoundItem {
                 id:randomSounds
