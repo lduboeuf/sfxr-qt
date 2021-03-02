@@ -8,7 +8,8 @@ import sfxr 1.0
 Item {
     id: root
     property Sound sound
-
+    height: childrenRect.height
+    width: childrenRect.width
 
     Column {
 

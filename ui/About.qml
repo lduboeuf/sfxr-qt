@@ -84,20 +84,19 @@ Page {
                     text: "<h2>Basic usage</h2>
 
 <p>
-  Start the application, then select some of the &quot;Preset&quot; on
-  the top to generate random sounds.
+  Pick some of the &quot;Preset&quot; on the top to generate random sounds.
   If you find a sound that is sort of interesting but not quite what you want,
-  you can play with the knobs around until it sounds more suitable.
+  you can play with the sliders around until it sounds more suitable.
 </p>
 
-<p>&quot;Mutate&quot; slightly alters the current parameters to automatically create a variation of the sound.</p>
+<p>&quot;Mutate&quot; (MUT) slightly alters the current parameters to automatically create a variation of the sound.</p>
 
 <h2>Advanced usage</h2>
 
 <p>Parameter description:</p>
 
 <ul>
-  <li>The top four buttons select the base waveform.</li>
+  <li>The top five buttons select the base waveform.</li>
   <li>First four parameters control the volume envelope Attack is the beginning of the sound, longer attack means a smoother start. Sustain is how long the volume is held constant before fading out. Increase Sustain Punch to cause a popping effect with increased (and falling) volume during the sustain phase. Decay is the fade-out time.</li>
   <li>Next six are for controlling the sound pitch or frequency. Start frequency is pretty obvious. Has a large impact on the overall sound. Min frequency represents a cutoff that stops all sound if it's passed during a downward slide. Slide sets the speed at which the frequency should be swept (up or down). Delta slide is the &quot;slide of slide&quot;, or rate of change in the slide speed. Vibrato depth/speed makes for an oscillating frequency effect at various strengths and rates.</li>
   <li>Then we have two parameters for causing an abrupt change in pitch after a certain delay. Amount is pitch change (up or down) and Speed indicates time to wait before changing the pitch.</li>

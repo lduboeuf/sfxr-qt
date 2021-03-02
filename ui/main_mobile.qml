@@ -13,6 +13,7 @@ ApplicationWindow {
 
     property real margin: 12
     property SoundItem currentSoundItem: null
+    property alias soundListModel: soundListModel
     property Sound sound:Sound{}
     property alias exportWrapper: exportManager
 
@@ -27,23 +28,18 @@ ApplicationWindow {
     SoundPlayer {
         id: soundPlayer
         sound: main.sound
-        property bool startup: true
-        onSoundChanged: {
-            // Hack to avoid playing directly at startup
-            if (startup) {
-                startup = false;
-                return;
-            }
-            play();
-        }
     }
+
+    SoundListModel {
+        id: soundListModel
+    }
+
 
     Generator {
         id: generator
         onSoundGenerated: {
             main.sound = sound
-            home.collapseAllExceptCurrent(currentSoundItem)
-            currentSoundItem.soundAdded(sound)
+            soundListModel.addNew(sound)
         }
     }
 

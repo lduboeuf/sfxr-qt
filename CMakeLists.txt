@@ -129,7 +129,6 @@ if (UBUNTU_TOUCH)
     add_definitions(-DQ_OS_UBUNTU_TOUCH)
 
 else()
-
     # Installation
     install(TARGETS sfxr-qt RUNTIME DESTINATION bin)
 

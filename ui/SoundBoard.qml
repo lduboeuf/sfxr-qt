@@ -10,9 +10,7 @@ Page {
     id:homeEffect
 
     property Sound initialSound
-
-    //topPadding: 12
-
+    spacing: 16
     header: ToolBar {
             RowLayout {
                 anchors.fill: parent
@@ -72,14 +70,19 @@ Page {
 
     SwipeView {
         id: swipeView
-        anchors.fill: parent
+        width: parent.width
+        height: parent.height
+
         currentIndex: tabBar.currentIndex
         property real knobSize: (swipeView.height - (swipeView.height*0.25)) / 3 //3 knobs max
 
-        PageWrapper {
-            //width: parent.width
-            implicitHeight: parent.height
-            implicitWidth: parent.width
+        Flickable {
+            height: swipeView.height
+            width: swipeView.width
+            contentWidth: width
+            contentHeight: contentItem.height
+            flickableDirection: Flickable.VerticalFlick
+
             WaveFormSelector {
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width * 0.6
@@ -87,7 +90,12 @@ Page {
             }
         }
 
-        PageWrapper {
+        Flickable {
+            height: swipeView.height
+            width: swipeView.width
+            contentWidth: width
+            contentHeight: contentItem.height
+            flickableDirection: Flickable.VerticalFlick
             Column{
                 width: swipeView.width
 
@@ -145,7 +153,12 @@ Page {
 
         }
 
-        PageWrapper {
+        Flickable {
+            height: swipeView.height
+            width: swipeView.width
+            contentWidth: width
+            contentHeight: contentItem.height
+            flickableDirection: Flickable.VerticalFlick
             SliderGroup {
                 width: swipeView.width
                 knobSize: swipeView.knobSize
@@ -181,7 +194,12 @@ Page {
                 }
             }
         }
-        PageWrapper {
+        Flickable {
+            height: swipeView.height
+            width: swipeView.width
+            contentWidth: width
+            contentHeight: contentItem.height
+            flickableDirection: Flickable.VerticalFlick
 
             SliderGroup {
                 knobSize: swipeView.knobSize
@@ -215,7 +233,12 @@ Page {
             }
 
         }
-        PageWrapper {
+        Flickable {
+            height: swipeView.height
+            width: swipeView.width
+            contentWidth: width
+            contentHeight: contentItem.height
+            flickableDirection: Flickable.VerticalFlick
             Column{
                 width: swipeView.width
                 Layout.fillHeight: true
@@ -279,8 +302,11 @@ Page {
     Item {
         id: menu
         width: header.height
-        y: header.height * 2
+        //y: header.height * 2
         anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.topMargin: 50
+
         property double itemDimension: header.height
 
 
@@ -366,10 +392,6 @@ Page {
         }
 
     }
-
-
-
-
 
     footer: TabBar {
         id: tabBar

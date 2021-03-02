@@ -44,5 +44,6 @@
         <file>assets/undo.svg</file>
         <file>PageWrapper.qml</file>
         <file>ExportWrapper.qml</file>
+        <file>HomeButton.qml</file>
     </qresource>
 </RCC>
