@@ -1,5 +1,5 @@
 import QtQuick 2.0
-import QtQuick.Controls 2.2
+import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.0
 import QtQuick.Layouts 1.3
 
@@ -12,61 +12,107 @@ Page {
     property Sound initialSound
     spacing: 16
     header: ToolBar {
-            RowLayout {
-                anchors.fill: parent
+        ToolButton {
+            id: toolButtonLeft
+            contentItem: Image {
+                id:navImage
+                fillMode: Image.Pad
+                sourceSize.width: header.height  * 0.4
+                sourceSize.height: header.height  * 0.4
+                source: "/assets/back.svg"
+            }
+            onClicked:{
+                soundPlayer.loop = checked;
+                mainStack.pop()
+            }
 
-                ToolButton {
-                    id: toolButtonLeft
-                    contentItem: Image {
-                        id:navImage
-                        fillMode: Image.Pad
-                        sourceSize.width: header.height  * 0.4
-                        sourceSize.height: header.height  * 0.4
-                        source: "/assets/back.svg"
-                    }
-                    onClicked:{
-                        soundPlayer.loop = checked;
-                        mainStack.pop()
-                    }
+            ColorOverlay {
+                anchors.fill: navImage
+                source: navImage
+                color: "white"
+            }
 
-                    ColorOverlay {
-                        anchors.fill: navImage
-                        source: navImage
-                        color: "white"
-                    }
+        }
+        Label {
+            text: main.sound.name
+            elide: Label.ElideRight
+            anchors.centerIn: parent
+        }
 
+        Row {
+            anchors.right: parent.right
+            ToolButton {
+                id: infoBtn
+                visible: tabBar.currentIndex > 0
+                contentItem: Image {
+                    id:helpImg
+                    fillMode: Image.Pad
+                    sourceSize.width: header.height  * 0.4
+                    sourceSize.height: header.height  * 0.4
+                    source: "/assets/help.svg"
                 }
-                Label {
-                    text: main.sound.name
-                    elide: Label.ElideRight
-                    horizontalAlignment: Qt.AlignHCenter
-                    verticalAlignment: Qt.AlignVCenter
-                    Layout.fillWidth: true
+                onClicked:{
+                    help.toggle()
                 }
 
-                ToolButton {
-                    id: exportBtn
-                    contentItem: Image {
-                        id:shareImg
-                        fillMode: Image.Pad
-                        sourceSize.width: header.height  * 0.4
-                        sourceSize.height: header.height  * 0.4
-                        source: "/assets/share.svg"
-                    }
+                ColorOverlay {
+                    anchors.fill: helpImg
+                    source: helpImg
+                    color: "white"
+                }
+            }
 
-                    onClicked:{
-                        main.exportWrapper.save()
-                    }
+            ToolButton {
+                id: exportBtn
+                contentItem: Image {
+                    id:shareImg
+                    fillMode: Image.Pad
+                    sourceSize.width: header.height  * 0.4
+                    sourceSize.height: header.height  * 0.4
+                    source: "/assets/share.svg"
+                }
 
-                    ColorOverlay {
-                        anchors.fill: shareImg
-                        source: shareImg
-                        color: "white"
-                    }
-                 }
+                onClicked:{
+                    main.exportWrapper.save()
+                }
 
+                ColorOverlay {
+                    anchors.fill: shareImg
+                    source: shareImg
+                    color: "white"
+                }
             }
         }
+    }
+
+    Item {
+        id: help
+
+        function toggle() {
+
+            if (helpPopup.visible) {
+                helpPopup.close()
+                return;
+            }
+            helpPopup.content = ""
+            //"Envelop", "Frequency", "Filters", "Others"
+            if (tabBar.currentIndex==1) {
+                helpPopup.content = helpPopup.envelopHelp
+            } else if (tabBar.currentIndex==2) {
+                helpPopup.content = helpPopup.frequencyHelp
+            } else if (tabBar.currentIndex==3) {
+                helpPopup.content = helpPopup.filtersHelp
+            } else if (tabBar.currentIndex==4) {
+                helpPopup.content = helpPopup.othersHelp
+            }
+
+            if (helpPopup.content !== "") {
+                helpPopup.open()
+            }
+        }
+    }
+
+    Helps{ id: helpPopup}
 
     SwipeView {
         id: swipeView
@@ -102,10 +148,8 @@ Page {
                 SliderGroup {
                     id:envelopGroup
                     width:parent.width
-                    //anchors.fill: parent.contentItem
                     knobSize: swipeView.knobSize
 
-                    //width: parent.width
                     text: qsTr("Envelop")
                     sound: main.sound
                     model: ListModel {
@@ -130,7 +174,6 @@ Page {
 
 
                 SliderGroup {
-                    //Layout.fillWidth: true
                     width:parent.width
                     knobSize: swipeView.knobSize
                     enabled: sound.waveForm === 0
@@ -309,7 +352,6 @@ Page {
 
         property double itemDimension: header.height
 
-
         Column {
             spacing: 12
             RoundButton {
@@ -329,7 +371,7 @@ Page {
                 ColorOverlay {
                     anchors.fill: playImg
                     source: playImg
-                    opacity: playBtn.pressed ? 0.5: 1
+                    opacity: soundPlayer.playing ? 1 : 0.5
                     color: "white"
                 }
                 onClicked: soundPlayer.play();
@@ -352,8 +394,11 @@ Page {
                 }
                 onClicked: {
                     soundPlayer.loop = !soundPlayer.loop;
-                    if (soundPlayer.loop)
-                        soundPlayer.play();
+                }
+                onPressAndHold: {
+                    soundPlayer.loop = true
+                    popup.open()
+                    loopTimeSlider.visible = true
                 }
 
                 ColorOverlay {
@@ -361,6 +406,43 @@ Page {
                     opacity: (soundPlayer.loop) ? 1 : 0.4
                     source: loopImg
                     color: "white"
+                }
+
+                Popup {
+                    id: popup
+
+                    parent: Overlay.overlay
+                    //x: Math.round((parent.width - width) * 0.7)
+                    x: menu.x - width
+                    //y: Math.round((parent.height - height) / 2)
+                    y: menu.y
+
+                    Column {
+
+                        width: parent.width
+                        Label {
+                            //width: parent.width
+                            anchors.horizontalCenter: popup.horizontalCenter
+                            color: "white"
+                            text: qsTr("loop speed")
+                        }
+
+                        Slider {
+                            id: loopTimeSlider
+                            width: parent.width
+                            anchors.horizontalCenter: popup.horizontalCenter
+                            orientation: Qt.Vertical
+
+                            from: 0.2
+                            to:0.8
+                            value: soundPlayer.loopTime
+                            onValueChanged: {
+                                soundPlayer.loopTime = value;
+                            }
+                            stepSize: 0.1
+
+                        }
+                    }
                 }
 
             }
@@ -392,6 +474,7 @@ Page {
         }
 
     }
+
 
     footer: TabBar {
         id: tabBar

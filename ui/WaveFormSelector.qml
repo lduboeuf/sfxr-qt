@@ -57,7 +57,7 @@ Item {
                 checked: Number(sound.waveForm) === model.waveForm
                 text: model.text
                 width: root.width
-                height: implicitHeight * 2
+                height: implicitHeight * 1.5
                 ButtonGroup.group: buttonGroup
                 onCheckedChanged: {
                     if (checked) {

@@ -9,7 +9,7 @@
             "desktop":  "sfxr.desktop"
         }
     },
-    "version": "1.3",
-    "maintainer": "lionel <lionel.duboeuf@gmail.com>",
+    "version": "1.5",
+    "maintainer": "Lionel Duboeuf <lduboeuf@ouvaton.org>",
     "framework" : "ubuntu-sdk-16.04"
 }

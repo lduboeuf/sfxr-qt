@@ -6,10 +6,6 @@ find_package(Qt5Qml)
 find_package(Qt5Quick)
 find_package(Qt5Widgets)
 
-#string(REGEX REPLACE "gcc$" "g++" CMAKE_CXX_COMPILER "${CMAKE_CXX_COMPILER}")
-
-#LIST(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/lib")
-
 # Get Architecture triplet
 execute_process(
     COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH
@@ -20,23 +16,6 @@ execute_process(
 set(CMAKE_AUTOMOC ON)
 set(CMAKE_CXX_STANDARD 14)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Woverloaded-virtual")
-#set(CMAKE_CXX_STANDARD_REQUIRED ON)
-#set(CMAKE_CXX_EXTENSIONS OFF)
-
-#find_package(SDL2 REQUIRED)
-#find_package(Qt5 REQUIRED Gui Quick Widgets)
-#include(qpropgen/cmake/qpropgen.cmake)
-
-#set(QT_IMPORTS_DIR "lib/${ARCH_TRIPLET}")
-
-
-#set(CMAKE_CXX_EXTENSIONS OFF)
-
-#set(CMAKE_REQUIRED_FLAGS ${CMAKE_CXX11_EXTENSION_COMPILE_OPTION}) #https://cmake.org/Bug/view.php?id=15550
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Woverloaded-virtual -std=c++11")
-
-
-
 
 set(sfxr_qt_lib_SRCS
     core/BaseSoundListModel.cpp
@@ -85,27 +64,12 @@ target_link_libraries(sfxr-qt
 target_include_directories(sfxr-qt
     PRIVATE ui
 )
-#execute_process(
-#    COMMAND dpkg-architecture -qDEB_HOST_MULTIARCH
-#    OUTPUT_VARIABLE ARCH_TRIPLET
-#    OUTPUT_STRIP_TRAILING_WHITESPACE
-#)
-#set(SOMELIBRARY_DIR "${CMAKE_SOURCE_DIR}/build/somelib/${ARCH_TRIPLET}")
-#find_package(SOMELIBRARY REQUIRED)
-#include_directories(${SOMELIBRARY_INCLUDE_DIRS})
-#target_link_libraries(mytarget ${SOMELIBRARY_LIBS})
-
 
 
 #option (UBUNTU_TOUCH "Build for Ubuntu Touch." OFF)
 if (UBUNTU_TOUCH)
     message("Building for Ubuntu Touch")
 
-    #execute_process(
-    #    COMMAND dpkg-architecture -qDEB_HOST_ARCH
-    #    OUTPUT_VARIABLE CLICK_ARCH
-    #    OUTPUT_STRIP_TRAILING_WHITESPACE
-    #)
     if(DEFINED ENV{ARCH})
         set(CLICK_ARCH "$ENV{ARCH}")
     else()

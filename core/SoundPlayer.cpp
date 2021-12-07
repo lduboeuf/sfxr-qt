@@ -6,6 +6,7 @@
 
 #include <Sound.h>
 #include <Synthesizer.h>
+#include <QDebug>
 
 static const int SCHEDULED_PLAY_DELAY = 200;
 
@@ -23,7 +24,7 @@ private:
 
 SoundPlayer::SoundPlayer(QObject* parent)
     : QObject(parent)
-    , mPlayTimer(new QTimer(this)) {
+    , mPlayTimer(new QTimer(this)), mPlayLoopTimer(new QTimer(this)) {
 
     if(SDL_Init(SDL_INIT_AUDIO) < 0) exit(0);
 
@@ -32,6 +33,9 @@ SoundPlayer::SoundPlayer(QObject* parent)
     mPlayTimer->setInterval(SCHEDULED_PLAY_DELAY);
     mPlayTimer->setSingleShot(true);
     connect(mPlayTimer, &QTimer::timeout, this, &SoundPlayer::play);
+
+    mPlayLoopTimer->setInterval(SCHEDULED_PLAY_DELAY);
+    connect(mPlayLoopTimer, &QTimer::timeout, this, &SoundPlayer::play);
     registerCallback();
 }
 
@@ -86,6 +90,7 @@ void SoundPlayer::setSound(Sound* value) {
         connect(mSound, &Sound::volumeChanged, this, &SoundPlayer::onSoundModified);
     } else {
         mPlaying = false;
+        playingChanged();
     }
     {
         QMutexLocker lock(&mMutex);
@@ -95,6 +100,11 @@ void SoundPlayer::setSound(Sound* value) {
         }
     }
     soundChanged(value);
+}
+
+bool SoundPlayer::playing() const
+{
+    return mPlaying;
 }
 
 bool SoundPlayer::loop() const {
@@ -110,16 +120,41 @@ void SoundPlayer::setLoop(bool value) {
         QMutexLocker lock(&mMutex);
         mPlayThreadData.loop = mLoop;
     }
+    if (mLoop) {
+        //mSound-
+        mPlayLoopTimer->start();
+    } else {
+        mPlayLoopTimer->stop();
+    }
     loopChanged(value);
 }
 
-void SoundPlayer::play() {
-    mPlaying = true;
-    {
-        QMutexLocker lock(&mMutex);
-        mPlayThreadData.playing = mPlaying;
-        mPlayThreadData.synth->start();
+qreal SoundPlayer::loopTime() const {
+    return mLoopTime;
+}
+
+void SoundPlayer::setLoopTime(qreal value) {
+
+    if (qFuzzyCompare(mLoopTime, value)) {
+        return;
     }
+    mLoopTime = value;
+    mPlayLoopTimer->setInterval(mLoopTime*1000);
+    loopTimeChanged(value);
+}
+
+void SoundPlayer::play() {
+    if (!mPlayThreadData.playing) {
+        mPlaying = true;
+        playingChanged();
+        {
+            QMutexLocker lock(&mMutex);
+            mElapsedTimer.start();
+            mPlayThreadData.playing = mPlaying;
+            mPlayThreadData.synth->start();
+        }
+    }
+
 }
 
 void SoundPlayer::staticSdlAudioCallback(void* userdata, unsigned char* stream, int len) {
@@ -130,6 +165,7 @@ void SoundPlayer::staticSdlAudioCallback(void* userdata, unsigned char* stream, 
 void SoundPlayer::sdlAudioCallback(unsigned char* stream, int len) {
     QMutexLocker lock(&mMutex);
     if (mPlayThreadData.playing) {
+
         unsigned int l = len / 2;
         qreal fbuf[l];
         memset(fbuf, 0, sizeof(fbuf));
@@ -139,9 +175,18 @@ void SoundPlayer::sdlAudioCallback(unsigned char* stream, int len) {
             qreal f = qBound(-1., fbuf[l], 1.);
             ((Sint16*)stream)[l] = (Sint16)(f * 32767);
         }
-        if (mPlayThreadData.loop && !mPlayThreadData.playing) {
-            mPlayThreadData.playing = true;
-            mPlayThreadData.synth->start();
+
+
+        if (!mPlayThreadData.playing) {
+            //qDebug() << "time:" << mElapsedTimer.elapsed();
+            mPlaying = false;
+            playingChanged();
+            if (mPlayLoopTimer->interval() < mElapsedTimer.elapsed()){
+                mPlayLoopTimer->setInterval(mElapsedTimer.elapsed()+50);
+            }
+            //mPlayLoopTimer->start();
+            //mPlayThreadData.playing = true;
+            //mPlayThreadData.synth->start();
         }
     } else {
         memset(stream, 0, len);
@@ -177,5 +222,6 @@ void SoundPlayer::onSoundModified() {
 }
 
 void SoundPlayer::schedulePlay() {
+    qDebug() << "schedule play " << mPlayTimer->interval();
     mPlayTimer->start();
 }

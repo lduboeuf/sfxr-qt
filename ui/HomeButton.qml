@@ -27,7 +27,7 @@ Button {
     background: Rectangle {
         color: btn.pressed   ?  Qt.lighter("#16213e"): "#16213e"
         opacity: 0.5
-        border.width: 2
+        border.width: 1
         border.color: "#e94560"
         radius: 20
         smooth: true

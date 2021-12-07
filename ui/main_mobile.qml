@@ -12,7 +12,7 @@ ApplicationWindow {
     width: 380
 
     property real margin: 12
-    property SoundItem currentSoundItem: null
+    property QtObject currentSoundItem: null
     property alias soundListModel: soundListModel
     property Sound sound:Sound{}
     property alias exportWrapper: exportManager
@@ -40,6 +40,7 @@ ApplicationWindow {
         onSoundGenerated: {
             main.sound = sound
             soundListModel.addNew(sound)
+            soundPlayer.play();
         }
     }
 

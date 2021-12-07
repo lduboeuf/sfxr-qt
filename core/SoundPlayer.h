@@ -3,6 +3,7 @@
 
 #include <QMutex>
 #include <QObject>
+#include <QElapsedTimer>
 
 #include <memory>
 
@@ -15,6 +16,8 @@ class SoundPlayer : public QObject {
     Q_OBJECT
     Q_PROPERTY(Sound* sound READ sound WRITE setSound NOTIFY soundChanged)
     Q_PROPERTY(bool loop READ loop WRITE setLoop NOTIFY loopChanged)
+    Q_PROPERTY(bool playing READ playing NOTIFY playingChanged)
+    Q_PROPERTY(qreal loopTime READ loopTime WRITE setLoopTime NOTIFY loopTimeChanged)
 public:
     explicit SoundPlayer(QObject* parent = nullptr);
     ~SoundPlayer();
@@ -24,17 +27,26 @@ public:
     Sound* sound() const;
     void setSound(Sound* value);
 
+    bool playing() const;
+
     bool loop() const;
     void setLoop(bool value);
+    qreal loopTime() const;
+    void setLoopTime(qreal loopTime);
 
 signals:
     void soundChanged(Sound* value);
     void loopChanged(bool value);
+    void loopTimeChanged(qreal value);
+    void playingChanged();
 
 private:
     bool mPlaying = false;
     bool mLoop = false;
+    qreal mLoopTime = 0.5;
+    QElapsedTimer mElapsedTimer;
     QTimer* mPlayTimer;
+    QTimer* mPlayLoopTimer;
     Sound* mSound = nullptr;
 
     mutable QMutex mMutex;

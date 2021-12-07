@@ -48,6 +48,7 @@ QHash<int, QByteArray> SoundListModel::roleNames() const {
 void SoundListModel::addNew(Sound* sound) {
     beginInsertRows(QModelIndex(), 0, 0);
     mItems.insert(mItems.begin(), std::unique_ptr<Sound>(sound));
+    //mItems.push_back(std::unique_ptr<Sound>(sound));
     endInsertRows();
     connect(sound, &Sound::nameChanged, this, [this, sound] { onSoundNameChanged(sound); });
     countChanged(count());

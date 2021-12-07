@@ -21,6 +21,7 @@ Slider {
     onValueChanged: {
         sound[soundProperty] = soundValueForSliderValue(value);
     }
+    stepSize: 0.1
 
     MouseArea {
         anchors.fill: parent

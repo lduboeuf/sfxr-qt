@@ -10,8 +10,8 @@ Page {
     property real textSize :10
 
     header: ToolBar {
-        RowLayout {
-            anchors.fill: parent
+//        RowLayout {
+//            anchors.fill: parent
 
             ToolButton {
                 id: backBtn
@@ -36,17 +36,18 @@ Page {
 
             Label {
                 id:title
-                horizontalAlignment: Qt.AlignHCenter
-                verticalAlignment: Qt.AlignVCenter
-                Layout.fillWidth: true
+                anchors.centerIn: parent
+//                horizontalAlignment: Qt.AlignHCenter
+//                verticalAlignment: Qt.AlignVCenter
+//                Layout.fillWidth: true
                 text: qsTr("About")
                 font.bold: true
             }
 
-            ToolButton {
-                //fake item for position ok
-            }
-        }
+//            ToolButton {
+//                //fake item for position ok
+//            }
+ //       }
     }
 
 
@@ -90,21 +91,6 @@ Page {
 </p>
 
 <p>&quot;Mutate&quot; (MUT) slightly alters the current parameters to automatically create a variation of the sound.</p>
-
-<h2>Advanced usage</h2>
-
-<p>Parameter description:</p>
-
-<ul>
-  <li>The top five buttons select the base waveform.</li>
-  <li>First four parameters control the volume envelope Attack is the beginning of the sound, longer attack means a smoother start. Sustain is how long the volume is held constant before fading out. Increase Sustain Punch to cause a popping effect with increased (and falling) volume during the sustain phase. Decay is the fade-out time.</li>
-  <li>Next six are for controlling the sound pitch or frequency. Start frequency is pretty obvious. Has a large impact on the overall sound. Min frequency represents a cutoff that stops all sound if it's passed during a downward slide. Slide sets the speed at which the frequency should be swept (up or down). Delta slide is the &quot;slide of slide&quot;, or rate of change in the slide speed. Vibrato depth/speed makes for an oscillating frequency effect at various strengths and rates.</li>
-  <li>Then we have two parameters for causing an abrupt change in pitch after a certain delay. Amount is pitch change (up or down) and Speed indicates time to wait before changing the pitch.</li>
-  <li>Following those are two parameters specific to the squarewave waveform. The duty cycle of a square describes its shape in terms of how large the positive vs negative sections are. It can be swept up or down by changing the second parameter.</li>
-  <li>Repeat speed, when not zero, causes the frequency and duty parameters to be reset at regular intervals while the envelope and filter continue unhindered. This can make for some interesting pulsating effects.</li>
-  <li>Phaser offset overlays a delayed copy of the audio stream on top of itself, resulting in a kind of tight reverb or sci-fi effect. This parameter can also be swept like many others.</li>
-  <li>Finally, the bottom five sliders control two filters which are applied after all other effects. The first one is a resonant lowpass filter which has a sweepable cutoff frequency. The other is a highpass filter which can be used to remove undesired low frequency hum in lighter sounds.</li>
-</ul>
 
 <p>
 For an introduction to sound theory: <a href=\"http://www.drpetter.se/article_sound.html\"> here</a>

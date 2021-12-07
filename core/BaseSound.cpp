@@ -1,5 +1,6 @@
 // This file has been generated with qpropgen, any changes made to it will be lost!
 #include <BaseSound.h>
+#include <QDebug>
 
 BaseSound::BaseSound(QObject* parent)
     : QObject(parent) {
@@ -236,6 +237,7 @@ void BaseSound::setRepeatSpeed(qreal value) {
     
         return;
     }
+    qDebug() << "speed change:" << value;
     mRepeatSpeed = value;
     repeatSpeedChanged(value);
 }

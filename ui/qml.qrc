@@ -45,5 +45,7 @@
         <file>PageWrapper.qml</file>
         <file>ExportWrapper.qml</file>
         <file>HomeButton.qml</file>
+        <file>Helps.qml</file>
+        <file>assets/help.svg</file>
     </qresource>
 </RCC>
