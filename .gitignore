@@ -3,3 +3,5 @@ build
 CMakeLists.txt.user
 lib/SDL2
 .clickable
+.idea
+3rdparty
