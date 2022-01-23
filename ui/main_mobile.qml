@@ -54,4 +54,8 @@ ApplicationWindow {
         initialItem: home
     }
 
+    Component.onCompleted: {
+        console.log("style:",Qt.application.style)
+    }
+
 }

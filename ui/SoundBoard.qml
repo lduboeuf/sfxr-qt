@@ -116,20 +116,21 @@ Page {
 
     SwipeView {
         id: swipeView
-        width: parent.width
-        height: parent.height
+        anchors.fill: parent
 
         currentIndex: tabBar.currentIndex
         property real knobSize: (swipeView.height - (swipeView.height*0.25)) / 3 //3 knobs max
 
         Flickable {
+            id: waveFormPage
             height: swipeView.height
             width: swipeView.width
             contentWidth: width
-            contentHeight: contentItem.height
+            contentHeight: waveFormSelector.height
             flickableDirection: Flickable.VerticalFlick
 
             WaveFormSelector {
+                id:waveFormSelector
                 anchors.horizontalCenter: parent.horizontalCenter
                 width: parent.width * 0.6
                 sound: main.sound
@@ -137,6 +138,7 @@ Page {
         }
 
         Flickable {
+            id: envelopPage
             height: swipeView.height
             width: swipeView.width
             contentWidth: width
@@ -197,6 +199,7 @@ Page {
         }
 
         Flickable {
+            id: frequencyPage
             height: swipeView.height
             width: swipeView.width
             contentWidth: width
@@ -238,6 +241,7 @@ Page {
             }
         }
         Flickable {
+            id: filtersPage
             height: swipeView.height
             width: swipeView.width
             contentWidth: width
@@ -277,6 +281,7 @@ Page {
 
         }
         Flickable {
+            id: othersPage
             height: swipeView.height
             width: swipeView.width
             contentWidth: width
@@ -478,7 +483,9 @@ Page {
 
     footer: TabBar {
         id: tabBar
-        currentIndex: swipeView.currentIndex
+        currentIndex: 0
+
+        onCurrentIndexChanged: console.log("olala ", currentIndex)
         background: Rectangle {
             color:"#333333"
         }

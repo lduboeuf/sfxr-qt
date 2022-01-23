@@ -1,10 +1,13 @@
 cmake_minimum_required(VERSION 3.5)
 project(sfxr-qt)
 
+find_package(PkgConfig REQUIRED)
 find_package(Qt5Core)
 find_package(Qt5Qml)
 find_package(Qt5Quick)
 find_package(Qt5Widgets)
+
+pkg_check_modules(SDL2 REQUIRED sdl2)
 
 # Get Architecture triplet
 execute_process(
@@ -37,13 +40,13 @@ add_library(sfxr-qt-lib STATIC ${sfxr_qt_lib_SRCS})
 
 
 #include SDL2 sources
-add_subdirectory(lib)
-target_link_libraries(sfxr-qt-lib SDL2 Qt5::Qml Qt5::Core)
+#add_subdirectory(lib)
+target_link_libraries(sfxr-qt-lib ${SDL2_LIBRARIES} Qt5::Qml Qt5::Core)
 
 target_include_directories(sfxr-qt-lib
     PUBLIC core
     PUBLIC ${CMAKE_CURRENT_BINARY_DIR}/core
-    PRIVATE ${CMAKE_CURRENT_LIST_DIR}/lib/SDL2/include
+    PRIVATE (${SDL2_INCLUDE_DIRS})
 )
 
 # sfxr-qt

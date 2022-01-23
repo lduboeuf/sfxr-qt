@@ -1,0 +1,12 @@
+builder: cmake
+framework: ubuntu-touch-24.04-1.x
+kill: sfxr-qt
+build_args: -DUBUNTU_TOUCH=ON
+dependencies_host:
+  - extra-cmake-modules
+  - python3-jinja2
+dependencies_target:
+  - libpulse-dev
+  - libsdl2-dev
+install_lib:
+  - "/usr/lib/${ARCH_TRIPLET}/libSDL2.so*"

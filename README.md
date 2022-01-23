@@ -4,12 +4,8 @@ Port of https://github.com/agateau/sfxr-qt to mobile
 
 Remove class generators, refactor UI.
 
-Build for ubuntu touch: ( SDL2 needs to be downloaded in lib/SDL2 folder, see cmake output ):
 
-
-`clickable -c packaging/ubuntu_touch/clickable.json`
-
-
+`clickable -c packaging/ubuntu_touch/clickable.yml`
 
 
 ## License

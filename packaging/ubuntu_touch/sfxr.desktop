@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Sfxr
-Exec=sfxr-qt
+Exec=sfxr-qt -style Material
 Icon=sfxr.png
 Terminal=false
 Type=Application

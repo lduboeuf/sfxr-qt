@@ -9,7 +9,7 @@
             "desktop":  "sfxr.desktop"
         }
     },
-    "version": "1.5",
+    "version": "1.6",
     "maintainer": "Lionel Duboeuf <lduboeuf@ouvaton.org>",
     "framework" : "@CLICK_FRAMEWORK@"
 }

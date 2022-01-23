@@ -1,9 +1,0 @@
-{
-  "builder": "cmake",
-  "kill": "sfxr-qt",
-  "build_args": "-DUBUNTU_TOUCH=ON",
-    "dependencies_target": [
-      "libpulse-dev"
-    ]
-}
-
